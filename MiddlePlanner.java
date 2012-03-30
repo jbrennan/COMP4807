@@ -18,6 +18,7 @@ public class MiddlePlanner extends Planner {
 	final byte RECORD = 89;
 	final byte SEEK_NONE = 90;
 	final byte SEEK_BLOCK = 91;
+	final byte DROP_BLOCK = 92;
 
 	final int ROTATION = 0;
 	final int MOVE = 1;
@@ -35,6 +36,7 @@ public class MiddlePlanner extends Planner {
 		RobotStateSeekBottom,
 		RobotStatePickBottom,
 		RobotStateDropTop,
+		RobotStateFinishedCycle,
 		RobotStateEnd
 	}
 	
@@ -99,8 +101,6 @@ public class MiddlePlanner extends Planner {
 	
 	
 	void goalNavigateAlongCurrentPathForRobotPoint(Pose pose, RobotState nextState) {
-		// This really needs to be refactored into a common method!!
-		// TODO: THIS ^^^^^^^^^^
 		// This is basically Goal-navigation now.
 		
 		// First see if he's close enough to the goal, in which case
@@ -285,94 +285,239 @@ public class MiddlePlanner extends Planner {
 			
 			
 			case RobotStateSeekBottom: {
+				// We have to tell the robot to actually drop the block.
+				
+				if (_haveSentDropBlockCommand) {
+					// We've sent this command, now check to see if we've heard the ACK
+					if (_lastCommandAcknowledged) {
+						
+						// We can assume he's dropped off the block now and REVERSED a bit.
+						// Now he should be goal following to the BOTTOM ZONE
+						goalNavigateAlongCurrentPathForRobotPoint(p, RobotStatePickBottom);
+						
+					} else {
+						// The robot has NOT ack'd yet... keep waiting
+						System.out.println("Waiting for SeekBottom ACK.");
+					}
+				} else {
+					// We have NOT yet sent the drop command, we need to send it now
+					System.out.println("Sending the DROP BLOCK message.");
+					sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, DROP_BLOCK);
+					_haveSentDropBlockCommand = true;
+				}
+				
+				break;
+			}
+			
+			
+			case RobotStatePickBottom: {
+				
+				// We need to tell the robot to go into BLOCK_SEEK mode
+				// We should also try to get an ACK from the robot he's in this mode?
+				if (_haveSentRobotPickBottomCommand) {
+					// We've already sent this command.. now check if we've been ack'd
+					if (_latestCommandAcknowledged) {
+						// We've heard the ACK
+						// Has the robot said he's found the block yet??
+						if (_robotFoundBlock) {
+							// At this point, the robot has told us he's found the block
+							// And he's sitting and waiting for his next command.
+							// So transition to RobotStateDropBottom
+							this.currentRobotState = RobotStateDropTop;
+							// Compute a path to this area????
+							// TODO: ^^^^^^^^^^^^^^^^^^^^^
+							// Basically take the robot's current pose and the goal location
+							// And create a path (array of Goals) to the drop area
+							// taking into account any obstacles
+							// (figure out where the end goal actually is....
+							computePathFromRobotPoseToEndGoal(p, RobotStateDropTop);
+						} else {
+							// Nope, keep seeking
+							// The robot should just keep looping until he finds one
+							// Then, he reports back to the TRACKER
+							// and breaks out of his loop, and listens for the next command.
+						}
+					} else {
+						// We have NOT heard the ACK... keep trying? or not..
+						System.out.println("Waiting for PickBottom ACK");
+					}
+				} else {
+					// We have NOT sent the command yet... send it!
+					System.out.println("Sending PickBottom SEEK_BLOCK message.");
+					sendInstructionsToRobot(MOVE_SMALL, ROTATE_NONE, SEEK_BLOCK);
+					_haveSentRobotPickTopCommand = true;
+				}
+				
+				break;
+			}
+			
+			
+			case RobotStateDropTop: {
+				
+				// Move towards the dropoff zone, then transition to the FinishedCycle state, where the block is dropped and we decide what's next
+				goalNavigateAlongCurrentPathForRobotPoint(p, RobotStateFinishedCycle);
+				
+				break;
+			}
+			
+			
+			case RobotStateFinishedCycle: {
+				
+				// We need to tell the robot to DROP a block and reverse a bit
+				// We should also try to get an ACK from the robot once he's done this
+				if (_haveSentRobotCommand) {
+					// We've already sent this command.. now check if we've been ack'd
+					if (_latestCommandAcknowledged) {
+						// We've heard the ACK
+						
+						
+						// See if we're all done
+						if (_numberOfDeliveredBlocks == TOTAL_BLOCKS) {
+							System.out.println("All blocks have been delivered. Going to move out of the way and STOP.");
+							this.currentRobotState = RobotStateEnd; // in this state, move out of the way and tell the others I'm done.
+						} else {
+							// Not done yet... keep seeking.
+							System.out.println("Finished a cycle. More cycles left.");
+							this.currentRobotState = RobotStateSeekTop;
+							computePathFromRobotPoseToEndGoal(p, RobotStateSeekTop);
+						}
+						
+						
+						
+					} else {
+						// We have NOT heard the ACK... keep trying? or not..
+						System.out.println("Waiting for FinishedCycle ACK");
+					}
+				} else {
+					// We have NOT sent the command yet... send it!
+					System.out.println("Sending FinishedCycle DROP_BLOCK message.");
+					sendInstructionsToRobot(MOVE_SMALL, ROTATE_NONE, DROP_BLOCK);
+					_haveSentRobotCommand = true;
+				}
+				
+				break;
+			}
+			
+			
+			case RobotStateEnd: {
 				
 				
+				if (_haveSentRobotCommand) {
+					// We've already sent this command.. now check if we've been ack'd
+					if (_latestCommandAcknowledged) {
+						// We've heard the ACK
+						
+						if (_allDone) {
+							return;
+						}
+						
+						// Reverse and STOP
+						sendInstructionsToRobot(REVERSE_BIG, ROTATE_NONE, STOP);
+						
+						// announce we're done
+						announceCompletionToOtherStations();
+						
+						
+						
+						
+					} else {
+						// We have NOT heard the ACK... keep trying? or not..
+						System.out.println("Waiting for FinishedCycle ACK");
+					}
+				} else {
+					// We have NOT sent the command yet... send it!
+					System.out.println("Sending FinishedCycle DROP_BLOCK message.");
+					sendInstructionsToRobot(MOVE_SMALL, ROTATE_NONE, DROP_BLOCK);
+					_haveSentRobotCommand = true;
+				}
 				
+				
+				break;
 			}
 			
 		}
 		
 		
 		
-		switch(this.currentMode) {
-			
-			case RobotModeWaitForNextBlock: {
-				
-				if (numberOfAvailableBottomBlocks + numberOfAvailableTopBlocks == 7) {
-					// we can start looking
-					currentMode = RobotModeSeekTopBlock;
-					
-					
-					// start orienting the robot towards the top pickup goal!!
-					
-				} else {
-					// Not ready to start looking for blocks yet.
-					
-					
-					// OR!! Maybe we're only here because we're locked out, so we need to wait. hmmm
-					// Or would that happen? I guess not in this mode, it's only for waiting for a block,
-					// not when we're locked out....
-					
-					
-					// tell the robot to just be idle
-					sendInstructionsToRobot(BE_STILL, ROTATE_NONE, SEEK_NONE);
-				}
-				
-				break;
-			}
-			
-			case RobotModeSeekTopBlock: {
-				
-				// tell the robot to TRY and move to the top pickup area.
-				// BUT if the area is LOCKED, then he'll have to just wait.
-				if (topZoneOpen == false) {
-					// we're not allowed in the top zone just quite yet
-				}
-				
-				// See where the robot currently is wrt to the TopDangerZone, regardless of angle
-				// that is, treat the dangerZone like a line (across the Y axis)
-				double distance = distanceToDangerZone(DANGER_ZONE_TOP, p);
-				
-				// this distance might be negative?
-				
-				if (distance  < 0) {
-					// we're outside the top zone, so we're safe
-					// keep moving towards the zone goal
-				} else {
-					// we're INSIDE the dangerZone, so be careful.
-					// Tell the Station ONE if we haven't already done so
-					// Then tell the robot to look for a block if we haven't already done so
-					// Just because we're in the zone doesn't mean we're close enough to the pickup zone
-				}
-				
-				
-				break;
-			}
-			
-			case RobotModeSeekBottomBlock: {
-				
-				// tell the robot to TRY and move to the bottom pickup area.
-				// UNLESS the area is Locked, then he'll just have to wait.
-				
-				break;
-			}
-			
-			case RobotModeReturnTopBlock: {
-				
-				// tell the robot to try and return a block to the top area, unless it is locked
-				// Well, can move so close before pausing
-				
-				break;
-			}
-			
-			case RobotModeReturnBottomBlock: {
-				
-				// tell the robot to try and return a block to the bottom area, unless it is locked
-				// Move so close before pausing.
-				
-				break;
-			}
-		}
+		// switch(this.currentMode) {
+		// 	
+		// 	case RobotModeWaitForNextBlock: {
+		// 		
+		// 		if (numberOfAvailableBottomBlocks + numberOfAvailableTopBlocks == 7) {
+		// 			// we can start looking
+		// 			currentMode = RobotModeSeekTopBlock;
+		// 			
+		// 			
+		// 			// start orienting the robot towards the top pickup goal!!
+		// 			
+		// 		} else {
+		// 			// Not ready to start looking for blocks yet.
+		// 			
+		// 			
+		// 			// OR!! Maybe we're only here because we're locked out, so we need to wait. hmmm
+		// 			// Or would that happen? I guess not in this mode, it's only for waiting for a block,
+		// 			// not when we're locked out....
+		// 			
+		// 			
+		// 			// tell the robot to just be idle
+		// 			sendInstructionsToRobot(BE_STILL, ROTATE_NONE, SEEK_NONE);
+		// 		}
+		// 		
+		// 		break;
+		// 	}
+		// 	
+		// 	case RobotModeSeekTopBlock: {
+		// 		
+		// 		// tell the robot to TRY and move to the top pickup area.
+		// 		// BUT if the area is LOCKED, then he'll have to just wait.
+		// 		if (topZoneOpen == false) {
+		// 			// we're not allowed in the top zone just quite yet
+		// 		}
+		// 		
+		// 		// See where the robot currently is wrt to the TopDangerZone, regardless of angle
+		// 		// that is, treat the dangerZone like a line (across the Y axis)
+		// 		double distance = distanceToDangerZone(DANGER_ZONE_TOP, p);
+		// 		
+		// 		// this distance might be negative?
+		// 		
+		// 		if (distance  < 0) {
+		// 			// we're outside the top zone, so we're safe
+		// 			// keep moving towards the zone goal
+		// 		} else {
+		// 			// we're INSIDE the dangerZone, so be careful.
+		// 			// Tell the Station ONE if we haven't already done so
+		// 			// Then tell the robot to look for a block if we haven't already done so
+		// 			// Just because we're in the zone doesn't mean we're close enough to the pickup zone
+		// 		}
+		// 		
+		// 		
+		// 		break;
+		// 	}
+		// 	
+		// 	case RobotModeSeekBottomBlock: {
+		// 		
+		// 		// tell the robot to TRY and move to the bottom pickup area.
+		// 		// UNLESS the area is Locked, then he'll just have to wait.
+		// 		
+		// 		break;
+		// 	}
+		// 	
+		// 	case RobotModeReturnTopBlock: {
+		// 		
+		// 		// tell the robot to try and return a block to the top area, unless it is locked
+		// 		// Well, can move so close before pausing
+		// 		
+		// 		break;
+		// 	}
+		// 	
+		// 	case RobotModeReturnBottomBlock: {
+		// 		
+		// 		// tell the robot to try and return a block to the bottom area, unless it is locked
+		// 		// Move so close before pausing.
+		// 		
+		// 		break;
+		// 	}
+		// }
 		
 	}
 	
