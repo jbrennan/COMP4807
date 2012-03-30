@@ -41,6 +41,18 @@ public class NavigationPlanner extends Planner {
 			System.out.println("Already done the goals... shouldn't be running!");
 			return;
 		}
+//		if (firstPose) {
+//			byte[] outData = new byte[6];
+//			outData[0] = (byte)(p.x / 256);
+//			outData[1] = (byte)(p.x % 256);
+//			outData[2] = (byte)(p.y / 256);
+//			outData[3] = (byte)(p.y % 256);
+//			outData[4] = (byte)(p.angle / 256);
+//			outData[5] = (byte)(p.angle % 256);
+//			poses.add(p);
+//			sendDataToRobot(outData);
+//			firstPose = false;
+//		}
 		
 		// Build up the point from the received data
 		// Check to see if it's near enough to the CURRENT_GOAL
@@ -117,8 +129,8 @@ public class NavigationPlanner extends Planner {
 		if (Math.abs(angleDifference) < RANGE) {
 			outData[ROTATION] = ROTATE_NONE;
 			outData[MOVE] = MOVE_SMALL;
-		} else if (diff > 0) {
-			outData[ROTATION] = ROTATE_BACK_SMALL;
+		} else if (angleDifference > 0) {
+			outData[ROTATION] = angleDifference < 180 ? ROTATE_BACK_SMALL : ROTATE_SMALL;
 			outData[MOVE] = MOVE_NONE;
 		} else {
 			outData[ROTATION] = ROTATE_SMALL;
@@ -139,6 +151,7 @@ public class NavigationPlanner extends Planner {
 	
 	
 	public double getAngle(Point goalPoint, Point robotPoint) {
+		System.out.println("Goal: " + goalPoint.toString() + " robot: " + robotPoint.toString());
 		int gx = goalPoint.x;
 		int gy = goalPoint.y;
 		int rx = robotPoint.x;
@@ -172,8 +185,11 @@ public class NavigationPlanner extends Planner {
 //	        inRads = Math.abs(inRads);
 //	    else
 //	        inRads = 2*Math.PI - inRads;
-
-	    return Math.toDegrees(inRads);
+	    double deg = Math.toDegrees(inRads);
+	    if (deg < 0) {
+	    	deg = 360 + deg;
+	    }
+	    return deg;
 	}
 
 	
@@ -242,6 +258,10 @@ public class NavigationPlanner extends Planner {
 		
 		public boolean equals(Point p) {
 			return p.x == this.x && p.y == this.y;
+		}
+		
+		public String toString() {
+			return x + ", " + y;
 		}
 	}
 

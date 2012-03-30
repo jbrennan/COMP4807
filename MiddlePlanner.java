@@ -24,6 +24,20 @@ public class MiddlePlanner extends Planner {
 	final int CONTROL = 2;
 	
 	final int TOTAL_BLOCKS = 8;
+	
+	
+	
+	public enum RobotState {
+		RobotStateStart,
+		RobotStateSeekTop,
+		RobotStatePickTop,
+		RobotStateDropBottom,
+		RobotStateSeekBottom,
+		RobotStatePickBottom,
+		RobotStateDropTop,
+		RobotStateEnd
+	}
+	
 
 	boolean firstPose;
 
@@ -44,7 +58,7 @@ public class MiddlePlanner extends Planner {
 	Goal bottomDropZone = new Goal(new Point(480, 0));
 	
 	
-	RobotMode currentMode = RobotModeWaitForNextBlock; // there are no blocks at the start!
+	RobotState currentRobotState;
 	
 	int numberOfAvailableTopBlocks;
 	int numberOfAvailableBottomBlocks;
@@ -69,6 +83,8 @@ public class MiddlePlanner extends Planner {
 		
 		currentGoal = goals.get(0);
 		currentGoalNumber = 0;
+		
+		currentRobotState = RobotStateStart;
 	}
 	
 	void sendInstructionsToRobot(byte movement, byte rotation, byte command) {
@@ -82,20 +98,199 @@ public class MiddlePlanner extends Planner {
 	}
 	
 	
-	void determineCurrentModeForPose(Pose currentPose) {
+	void goalNavigateAlongCurrentPathForRobotPoint(Pose pose, RobotState nextState) {
+		// This really needs to be refactored into a common method!!
+		// TODO: THIS ^^^^^^^^^^
+		// This is basically Goal-navigation now.
 		
-
+		// First see if he's close enough to the goal, in which case
+		// transition to the next State.
+		Point robotPoint = new Point(p.x, p.y);
+		Goal currentGoal = goals.get(currentGoalNumber); // TODO: verify this
 		
-		
+		if (currentGoal.isPointCloseEnoughToGoal(robotPoint)) {
+			// Really, we have to make sure we do this for the WHOLE PATH OF GOALS
+			// Not just 1 goal.
+			// We're close enough to change states
+			System.out.println("Close enough");
+			
+			// Change state and reset some internal flags.
+			this.currentRobotState = nextState;
+			_haveSentRobotPickTopCommand = false;
+			_haveSentRobotPickBottomCommand = false;
+			_latestCommandAcknowledged = false;
+			_robotFoundBlock = false;
+			
+			
+		} else {
+			// We need to tell the robot to (keep) moving towards the Drop Zone.
+			int robotCurrentAngle = p.angle; // degrees
+			int angleToTheGoal = (int)getAngle(currentGoal.location, robotPoint);
+			int distanceToGoal = distance(currentGoal.location.x - robotPoint.x,
+											currentGoal.location.y -robotPoint.y);
+			System.out.println("Distance to goal is: " + distanceToGoal);
+			
+			int RANGE = 5;
+			byte rotation = ROTATE_NONE;
+			byte movement = MOVE_NONE;
+			 
+			int angleDifference = angleToTheGoal - robotCurrentAngle;
+			
+			if (Math.abs(angleDifference) < RANGE) {
+				rotation = ROTATE_NONE;
+				movement = MOVE_SMALL;
+			} else if (angleDifference > 0) {
+				rotation = angleDifference < 180? ROTATE_BACK_SMALL : ROTATE_SMALL;
+				movement = MOVE_NONE;
+			} else {
+				rotation = ROTATE_SMALL; // might need to do like above...
+				movement = MOVE_NONE;
+			}
+			
+			
+			// Now send this command to the robot
+			sendInstructionsToRobot(movement, rotation, GO);
+			
+		}
 	}
+	
 	
 	
 	boolean receivedCommandAck = true;
 	public void receivedPoseFromTracker(Pose p) {
 		
 		
-		// Do logic to determine the current mode.
-		determineCurrentModeForPose(p);
+		switch (this.currentRobotState) {
+			case RobotStateStart: {
+				if ((numberOfTopBlocksReady + numberOfBottomBlocksReady) == TOTAL_BLOCKS && topZoneUnlocked && bottonZoneUnlocked) {
+					// transition to the next state
+					this.currentRobotState = RobotStateSeekTop;
+				} else {
+					// Stay in the same state... don't tell the robot?
+					this.currentRobotState = RobotStateStart;
+				}
+				
+				break;
+			}
+			
+			
+			case RobotStateSeekTop: {
+				// The robot needs to be moving towards the top pickup zone
+				// This is basically Goal-navigation now.
+				
+				// First see if he's close enough to the goal, in which case
+				// transition to the next State.
+				Point robotPoint = new Point(p.x, p.y);
+				Goal currentGoal = goals.get(currentGoalNumber); // TODO: verify this
+				
+				if (currentGoal.isPointCloseEnoughToGoal(robotPoint)) {
+					// We're close enough to change states
+					System.out.println("SeekTop: close enough to PickupZone");
+					
+					// Change state and reset some internal flags.
+					this.currentRobotState = RobotStatePickTop;
+					_haveSentRobotPickTopCommand = false;
+					_latestCommandAcknowledged = false;
+					_robotFoundBlock = false;
+					
+					
+				} else {
+					// We need to tell the robot to (keep) moving towards the Pickup Zone.
+					int robotCurrentAngle = p.angle; // degrees
+					int angleToTheGoal = (int)getAngle(currentGoal.location, robotPoint);
+					int distanceToGoal = distance(currentGoal.location.x - robotPoint.x,
+													currentGoal.location.y -robotPoint.y);
+					System.out.println("Distance to goal is: " + distanceToGoal);
+					
+					int RANGE = 5;
+					byte rotation = ROTATE_NONE;
+					byte movement = MOVE_NONE;
+					 
+					int angleDifference = angleToTheGoal - robotCurrentAngle;
+					
+					if (Math.abs(angleDifference) < RANGE) {
+						rotation = ROTATE_NONE;
+						movement = MOVE_SMALL;
+					} else if (angleDifference > 0) {
+						rotation = angleDifference < 180? ROTATE_BACK_SMALL : ROTATE_SMALL;
+						movement = MOVE_NONE;
+					} else {
+						rotation = ROTATE_SMALL; // might need to do like above...
+						movement = MOVE_NONE;
+					}
+					
+					
+					// Now send this command to the robot
+					sendInstructionsToRobot(movement, rotation, GO);
+					
+				}
+				
+				
+				break;
+				
+				
+			}
+			
+			
+			case RobotStatePickTop: {
+				
+				// We need to tell the robot to go into BLOCK_SEEK mode
+				// We should also try to get an ACK from the robot he's in this mode?
+				if (_haveSentRobotPickTopCommand) {
+					// We've already sent this command.. now check if we've been ack'd
+					if (_latestCommandAcknowledged) {
+						// We've heard the ACK
+						// Has the robot said he's found the block yet??
+						if (_robotFoundBlock) {
+							// At this point, the robot has told us he's found the block
+							// And he's sitting and waiting for his next command.
+							// So transition to RobotStateDropBottom
+							this.currentRobotState = RobotStateDropBottom;
+							// Compute a path to this area????
+							// TODO: ^^^^^^^^^^^^^^^^^^^^^
+							// Basically take the robot's current pose and the goal location
+							// And create a path (array of Goals) to the drop area
+							// taking into account any obstacles
+							// (figure out where the end goal actually is....
+							computePathFromRobotPoseToEndGoal(p, RobotStateDropBottom);
+						} else {
+							// Nope, keep seeking
+							// The robot should just keep looping until he finds one
+							// Then, he reports back to the TRACKER
+							// and breaks out of his loop, and listens for the next command.
+						}
+					} else {
+						// We have NOT heard the ACK... keep trying? or not..
+						System.out.println("Waiting for PickTop ACK");
+					}
+				} else {
+					// We have NOT sent the command yet... send it!
+					System.out.println("Sending PickTop SEEK_BLOCK message.");
+					sendInstructionsToRobot(MOVE_SMALL, ROTATE_NONE, SEEK_BLOCK);
+					_haveSentRobotPickTopCommand = true;
+				}
+				
+				// Stay in this mode until the robot tells us he's got a block
+				
+				
+				break;
+			}
+			
+			
+			case RobotStateDropBottom: {
+				goalNavigateAlongCurrentPathForRobotPoint(p, RobotStateSeekBottom);
+				// When do we tell the robot to ACTUALLY drop it?
+				break;
+			}
+			
+			
+			case RobotStateSeekBottom: {
+				
+				
+				
+			}
+			
+		}
 		
 		
 		
@@ -253,16 +448,25 @@ public class MiddlePlanner extends Planner {
 	}
 	
 	
+	
+	
+	
 	// The current mode of the robot.
 	// He may have to idle if, for example, one of the drop zones is currently occupied by another bot.
 	// But he remains in his current mode until he's completed the goal.
-	public enum RobotMode {
-		RobotModeSeekTopBlock, // travelling towards the top to get a block in need of a move
-		RobotModeSeekBottomBlock, // travelling towards the bottom to get a block to bring back up
-		RobotModeReturnTopBlock, // moving a block towards the TOP drop zone
-		RobotModeReturnBottomBlock, // moving a block towards the BOTTOM drop zone
-		RobotModeWaitForNextBlock // Currently no blocks available, so be idle
-	}
+	// public enum RobotMode {
+	// 	RobotModeSeekTopBlock, // travelling towards the top to get a block in need of a move
+	// 	RobotModeSeekBottomBlock, // travelling towards the bottom to get a block to bring back up
+	// 	RobotModeReturnTopBlock, // moving a block towards the TOP drop zone
+	// 	RobotModeReturnBottomBlock, // moving a block towards the BOTTOM drop zone
+	// 	RobotModeWaitForNextBlock // Currently no blocks available, so be idle
+	// }
+	
+	
+	
 
+	
+	
+	
 	
 }
