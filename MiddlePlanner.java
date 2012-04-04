@@ -314,48 +314,7 @@ public class MiddlePlanner extends Planner {
 				// Now we tell him to just wait a sec and then ask again for the next state
 				sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, STAY_STILL);
 				break;
-				
-				
-				
-				// // We should also try to get an ACK from the robot he's in this mode?
-				// if (_haveSentRobotPickTopCommand) {
-				// 	// We've already sent this command.. now check if we've been ack'd
-				// 	if (_latestCommandAcknowledged) {
-				// 		// We've heard the ACK
-				// 		// Has the robot said he's found the block yet??
-				// 		if (_robotFoundBlock) {
-				// 			// At this point, the robot has told us he's found the block
-				// 			// And he's sitting and waiting for his next command.
-				// 			// So transition to RobotStateDropBottom
-				// 			setRobotState(RobotStateDropBottom);
-				// 			// Compute a path to this area????
-				// 			// TODO: ^^^^^^^^^^^^^^^^^^^^^
-				// 			// Basically take the robot's current pose and the goal location
-				// 			// And create a path (array of Goals) to the drop area
-				// 			// taking into account any obstacles
-				// 			// (figure out where the end goal actually is....
-				// 			computePathFromRobotPoseToEndGoal(p, RobotStateDropBottom);
-				// 		} else {
-				// 			// Nope, keep seeking
-				// 			// The robot should just keep looping until he finds one
-				// 			// Then, he reports back to the TRACKER
-				// 			// and breaks out of his loop, and listens for the next command.
-				// 		}
-				// 	} else {
-				// 		// We have NOT heard the ACK... keep trying? or not..
-				// 		System.out.println("Waiting for PickTop ACK");
-				// 	}
-				// } else {
-				// 	// We have NOT sent the command yet... send it!
-				// 	System.out.println("Sending PickTop SEEK_BLOCK message.");
-				// 	sendInstructionsToRobot(MOVE_SMALL, ROTATE_NONE, SEEK_BLOCK);
-				// 	_haveSentRobotPickTopCommand = true;
-				// }
-				
-				// Stay in this mode until the robot tells us he's got a block
-				
-				
-				break;
+
 			}
 			
 			
@@ -376,6 +335,7 @@ public class MiddlePlanner extends Planner {
 					// He's done it
 					System.out.println("DoActualDropBottom: Robot has dropped the block.")
 					setRobotState(RobotStateSeekBottom);
+					computePathFromRobotPoseToEndGoal(latestPose, RobotStateSeekBottom);
 					sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
 				}
 				
@@ -385,78 +345,127 @@ public class MiddlePlanner extends Planner {
 			
 			case RobotStateSeekBottom: {
 				
-				
-				// The Robot has now actually dropped the block and is awaiting its next instruction
-				
-				if (_haveSentDropBlockCommand) {
-					// We've sent this command, now check to see if we've heard the ACK
-					if (_lastCommandAcknowledged) {
-						
-						// We can assume he's dropped off the block now and REVERSED a bit.
-						// Now he should be goal following to the BOTTOM ZONE
-						goalNavigateAlongCurrentPathForRobotPoint(p, RobotStatePickBottom);
-						
-					} else {
-						// The robot has NOT ack'd yet... keep waiting
-						System.out.println("Waiting for SeekBottom ACK.");
-					}
-				} else {
-					// We have NOT yet sent the drop command, we need to send it now
-					System.out.println("Sending the DROP BLOCK message.");
-					sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, DROP_BLOCK);
-					_haveSentDropBlockCommand = true;
-				}
-				
+				// Seek to the bottom area
+				goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotStatePickBottom);
 				break;
+				
+				
+				// // The Robot has now actually dropped the block and is awaiting its next instruction
+				// 
+				// if (_haveSentDropBlockCommand) {
+				// 	// We've sent this command, now check to see if we've heard the ACK
+				// 	if (_lastCommandAcknowledged) {
+				// 		
+				// 		// We can assume he's dropped off the block now and REVERSED a bit.
+				// 		// Now he should be goal following to the BOTTOM ZONE
+				// 		goalNavigateAlongCurrentPathForRobotPoint(p, RobotStatePickBottom);
+				// 		
+				// 	} else {
+				// 		// The robot has NOT ack'd yet... keep waiting
+				// 		System.out.println("Waiting for SeekBottom ACK.");
+				// 	}
+				// } else {
+				// 	// We have NOT yet sent the drop command, we need to send it now
+				// 	System.out.println("Sending the DROP BLOCK message.");
+				// 	sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, DROP_BLOCK);
+				// 	_haveSentDropBlockCommand = true;
+				// }
 			}
 			
 			
 			case RobotStatePickBottom: {
 				
+				
 				// We need to tell the robot to go into BLOCK_SEEK mode
-				// We should also try to get an ACK from the robot he's in this mode?
-				if (_haveSentRobotPickBottomCommand) {
-					// We've already sent this command.. now check if we've been ack'd
-					if (_latestCommandAcknowledged) {
-						// We've heard the ACK
-						// Has the robot said he's found the block yet??
-						if (_robotFoundBlock) {
-							// At this point, the robot has told us he's found the block
-							// And he's sitting and waiting for his next command.
-							// So transition to RobotStateDropTop
-							setRobotState(RobotStateDropTop);
-							// Compute a path to this area????
-							// TODO: ^^^^^^^^^^^^^^^^^^^^^
-							// Basically take the robot's current pose and the goal location
-							// And create a path (array of Goals) to the drop area
-							// taking into account any obstacles
-							// (figure out where the end goal actually is....
-							computePathFromRobotPoseToEndGoal(p, RobotStateDropTop);
-						} else {
-							// Nope, keep seeking
-							// The robot should just keep looping until he finds one
-							// Then, he reports back to the TRACKER
-							// and breaks out of his loop, and listens for the next command.
-						}
-					} else {
-						// We have NOT heard the ACK... keep trying? or not..
-						System.out.println("Waiting for PickBottom ACK");
-					}
-				} else {
-					// We have NOT sent the command yet... send it!
-					System.out.println("Sending PickBottom SEEK_BLOCK message.");
+				
+				// We'll send the BLOCK_SEEK command, which he'll then do.
+				// After he's found the block (OR A TIMEOUT?) then he'll message again, reporting
+				if (commandData[STATUS] == STATUS_COMMAND_REQUEST) {
+					// He's asking for what to do, so tell him to go seek
+					System.out.println("PickBottom: going to tell robot to SEEK_BLOCK");
 					sendInstructionsToRobot(MOVE_SMALL, ROTATE_NONE, SEEK_BLOCK);
-					_haveSentRobotPickTopCommand = true;
+					break;
+				} else if (commandData[STATUS] == STATUS_BLOCK_FOUND) {
+					// He's found a block
+					System.out.println("PickBottom: Robot found a block. Transitioning...");
+					setRobotState(RobotStateDropTop);
+					computePathFromRobotPoseToEndGoal(latestPose, RobotStateDropTop);
+				} else {
+					// he must not have found it in time... sad face?
+					System.out.println("PickBottom: Robot did not find a block... transitioning anyway.");
+					setRobotState(RobotStateDropTop);
+					computePathFromRobotPoseToEndGoal(latestPose, RobotStateDropTop);
 				}
 				
+				
+				// He's either found or hasn't found a block, but he's already looked.
+				// Now we tell him to just wait a sec and then ask again for the next state
+				sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, STAY_STILL);
 				break;
+				
+				// // We need to tell the robot to go into BLOCK_SEEK mode
+				// // We should also try to get an ACK from the robot he's in this mode?
+				// if (_haveSentRobotPickBottomCommand) {
+				// 	// We've already sent this command.. now check if we've been ack'd
+				// 	if (_latestCommandAcknowledged) {
+				// 		// We've heard the ACK
+				// 		// Has the robot said he's found the block yet??
+				// 		if (_robotFoundBlock) {
+				// 			// At this point, the robot has told us he's found the block
+				// 			// And he's sitting and waiting for his next command.
+				// 			// So transition to RobotStateDropTop
+				// 			setRobotState(RobotStateDropTop);
+				// 			// Compute a path to this area????
+				// 			// TODO: ^^^^^^^^^^^^^^^^^^^^^
+				// 			// Basically take the robot's current pose and the goal location
+				// 			// And create a path (array of Goals) to the drop area
+				// 			// taking into account any obstacles
+				// 			// (figure out where the end goal actually is....
+				// 			computePathFromRobotPoseToEndGoal(p, RobotStateDropTop);
+				// 		} else {
+				// 			// Nope, keep seeking
+				// 			// The robot should just keep looping until he finds one
+				// 			// Then, he reports back to the TRACKER
+				// 			// and breaks out of his loop, and listens for the next command.
+				// 		}
+				// 	} else {
+				// 		// We have NOT heard the ACK... keep trying? or not..
+				// 		System.out.println("Waiting for PickBottom ACK");
+				// 	}
+				// } else {
+				// 	// We have NOT sent the command yet... send it!
+				// 	System.out.println("Sending PickBottom SEEK_BLOCK message.");
+				// 	sendInstructionsToRobot(MOVE_SMALL, ROTATE_NONE, SEEK_BLOCK);
+				// 	_haveSentRobotPickTopCommand = true;
+				// }
+				// 
+				// break;
 			}
 			
 			
 			case RobotStateDropTop: {
 				
 				// Move towards the dropoff zone, then transition to the FinishedCycle state, where the block is dropped and we decide what's next
-				goalNavigateAlongCurrentPathForRobotPoint(p, RobotStateFinishedCycle);
+				goalNavigateAlongCurrentPathForRobotPoint(p, RobotStateDoActualDropTop);
+				
+				break;
+			}
+			
+			
+			case RobotStateDoActualDropTop: {
+				
+				if (commandData[STATUS] == STATUS_COMMAND_REQUEST) {
+					// ASking us what to do.. say drop the block!
+					System.out.println("DoActualDropTop: telling robot to drop");
+					sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, DROP_BLOCK);
+				} else {
+					// He's done it
+					System.out.println("DoActualDropTop: Robot has dropped the block.")
+					setRobotState(RobotStateFinishedCycle);
+					computePathFromRobotPoseToEndGoal(latestPose, RobotStateFinishedCycle);
+					sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
+				}
+				
 				
 				break;
 			}
@@ -464,75 +473,90 @@ public class MiddlePlanner extends Planner {
 			
 			case RobotStateFinishedCycle: {
 				
-				// We need to tell the robot to DROP a block and reverse a bit
-				// We should also try to get an ACK from the robot once he's done this
-				if (_haveSentRobotCommand) {
-					// We've already sent this command.. now check if we've been ack'd
-					if (_latestCommandAcknowledged) {
-						// We've heard the ACK
-						
-						
-						// See if we're all done
-						if (_numberOfDeliveredBlocks == TOTAL_BLOCKS) {
-							System.out.println("All blocks have been delivered. Going to move out of the way and STOP.");
-							// in this state, move out of the way and tell the others I'm done.
-							setRobotState(RobotStateEnd);
-						} else {
-							// Not done yet... keep seeking.
-							System.out.println("Finished a cycle. More cycles left.");
-							setRobotState(RoboteStateSeekTop);
-							computePathFromRobotPoseToEndGoal(p, RobotStateSeekTop);
-						}
-						
-						
-						
-					} else {
-						// We have NOT heard the ACK... keep trying? or not..
-						System.out.println("Waiting for FinishedCycle ACK");
-					}
+				
+				if (_numberOfDeliveredBlocks == TOTAL_BLOCKS) {
+					System.out.println("All the blocks have been delivered. Move out of the way and STOP");
+					setRobotState(RobotStateEnd);
+					sendInstructionsToRobot(REVERSE_BIG, ROTATE_NONE, ALL_DONE);
 				} else {
-					// We have NOT sent the command yet... send it!
-					System.out.println("Sending FinishedCycle DROP_BLOCK message.");
-					sendInstructionsToRobot(MOVE_SMALL, ROTATE_NONE, DROP_BLOCK);
-					_haveSentRobotCommand = true;
+					System.out.println("Finished a cycle. More blocks remaining.");
+					setRobotState(RobotStateSeekTop);
+					computePathFromRobotPoseToEndGoal(latestPose, RobotStateSeekTop);
+					sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
 				}
 				
 				break;
+				
+				
+				// We need to tell the robot to DROP a block and reverse a bit
+				// We should also try to get an ACK from the robot once he's done this
+				// if (_haveSentRobotCommand) {
+				// 	// We've already sent this command.. now check if we've been ack'd
+				// 	if (_latestCommandAcknowledged) {
+				// 		// We've heard the ACK
+				// 		
+				// 		
+				// 		// See if we're all done
+				// 		if (_numberOfDeliveredBlocks == TOTAL_BLOCKS) {
+				// 			System.out.println("All blocks have been delivered. Going to move out of the way and STOP.");
+				// 			// in this state, move out of the way and tell the others I'm done.
+				// 			setRobotState(RobotStateEnd);
+				// 		} else {
+				// 			// Not done yet... keep seeking.
+				// 			System.out.println("Finished a cycle. More cycles left.");
+				// 			setRobotState(RoboteStateSeekTop);
+				// 			computePathFromRobotPoseToEndGoal(p, RobotStateSeekTop);
+				// 		}
+				// 		
+				// 		
+				// 		
+				// 	} else {
+				// 		// We have NOT heard the ACK... keep trying? or not..
+				// 		System.out.println("Waiting for FinishedCycle ACK");
+				// 	}
+				// } else {
+				// 	// We have NOT sent the command yet... send it!
+				// 	System.out.println("Sending FinishedCycle DROP_BLOCK message.");
+				// 	sendInstructionsToRobot(MOVE_SMALL, ROTATE_NONE, DROP_BLOCK);
+				// 	_haveSentRobotCommand = true;
+				// }
+				
+				
 			}
 			
 			
 			case RobotStateEnd: {
 				
-				
-				if (_haveSentRobotCommand) {
-					// We've already sent this command.. now check if we've been ack'd
-					if (_latestCommandAcknowledged) {
-						// We've heard the ACK
-						
-						if (_allDone) {
-							return;
-						}
-						
-						// Reverse and STOP
-						sendInstructionsToRobot(REVERSE_BIG, ROTATE_NONE, STOP);
-						
-						// announce we're done
-						announceCompletionToOtherStations();
-						_allDone = true;
-						
-					} else {
-						// We have NOT heard the ACK... keep trying? or not..
-						System.out.println("Waiting for FinishedCycle ACK");
-					}
-				} else {
-					// We have NOT sent the command yet... send it!
-					System.out.println("Sending FinishedCycle DROP_BLOCK message.");
-					sendInstructionsToRobot(MOVE_SMALL, ROTATE_NONE, DROP_BLOCK);
-					_haveSentRobotCommand = true;
-				}
-				
-				
+				System.out.println("The robot is all done... why is it asking again?");
+				sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ALL_DONE);
 				break;
+				
+				// if (_haveSentRobotCommand) {
+				// 	// We've already sent this command.. now check if we've been ack'd
+				// 	if (_latestCommandAcknowledged) {
+				// 		// We've heard the ACK
+				// 		
+				// 		if (_allDone) {
+				// 			return;
+				// 		}
+				// 		
+				// 		// Reverse and STOP
+				// 		sendInstructionsToRobot(REVERSE_BIG, ROTATE_NONE, STOP);
+				// 		
+				// 		// announce we're done
+				// 		announceCompletionToOtherStations();
+				// 		_allDone = true;
+				// 		
+				// 	} else {
+				// 		// We have NOT heard the ACK... keep trying? or not..
+				// 		System.out.println("Waiting for FinishedCycle ACK");
+				// 	}
+				// } else {
+				// 	// We have NOT sent the command yet... send it!
+				// 	System.out.println("Sending FinishedCycle DROP_BLOCK message.");
+				// 	sendInstructionsToRobot(MOVE_SMALL, ROTATE_NONE, DROP_BLOCK);
+				// 	_haveSentRobotCommand = true;
+				// }
 			}
 		}		
 	}
