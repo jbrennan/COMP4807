@@ -53,28 +53,43 @@ CON
 
   WHEEL_SPEED_LEFT = 17
   WHEEL_SPEED_RIGHT = 17
+  
+  BLOCK_LEFT_SIDE = 65
+  BLOCK_RIGHT_SIDE 30
 
-  ROTATE_NONE = 0
-  ROTATE_SMALL = 1
-  'ROTATE_BIG = 2
-  ROTATE_BACK_SMALL = 2
-  'ROTATE_BACK_BIG = 4
-  ROTATE_FULL = 3
-                
-  MOVE_NONE = 0
-  MOVE_SMALL = 1
-  STOP = 88
-  RECORD = 89
-  GO = 0
-                
-  ROTATION_I = 1
-  MOVE = 2
-  CONTROL = 3
-
+  ' byte indices
+	ROTATION = 1
+	MOVE = 2
+	CONTROL = 3
+	
+	' Movement instructions
+	MOVE_NONE = 0
+	MOVE_SMALL = 1
+	
+	' Rotation instructions
+	ROTATE_NONE = 0
+	ROTATE_SMALL = 1
+	ROTATE_BACK_SMALL = 2
+	
+	
+	' Command instructions
+	STAY_STILL = 0  ' We're still waiting for the team to finish... set a timer and then ask again
+	ASK_AGAIN = 1   ' Transitioning states, just ask again on the next iteration through
+	GO = 2          ' Some kind of movement command (move or rotate)
+	SEEK_BLOCK = 3  ' The robot needs to go into seek mode and then pick up a block... collision detection too!
+	DROP_BLOCK = 4  ' The robot just needs to drop the block
+	ALL_DONE = 100  ' The robot has completed the tasks and should shut down.
+	
+	
+	' Status codes
+	STATUS_COMMAND_REQUEST = 0
+	STATUS_BLOCK_FOUND = 1
+  
+  TURN_COUNT_SMALL = 10
   TURN_SMALL = 20
   MOVE_SMALL_COUNT = 50
+  STAY_STILL_COUNT = 100
 
-  INVALID_READING = 111
 
 VAR
   long current_state, edge_follow_left, edge_follow_right
@@ -103,7 +118,7 @@ PUB main
   turning_count := 0
   forward_count := 0
   turning_left := NO
-  collecting_data := NO
+  
 
   turn_val := 0
   move_val := 0
@@ -131,14 +146,6 @@ PUB main
       RBC.DebugLong(turning_count)
       nslog(string(" :in the turning count loop"))
       do_turn
-
-      if (collecting_data == YES)
-        'collect some data!
-        do_collect_data
-        if (turning_count < 1)
-          collecting_data := NO
-          nslog(string("DONE COLLECTING DATA!!!!!!!!!!!!"))
-        send_data_to_pc
       
       next
 
@@ -149,82 +156,170 @@ PUB main
       nslog(string("in the moving loop"))
       do_move_forward
       next
+    
+    
+    if (stay_still_count > 0)
+      stay_still_count := stay_still_count - 1
+      nslog(string("staying still...."))
+      next
 
 
     'wait and get data from the RBC
     nslog(string("waiting for planner data"))
-    RBC.ReceiveData(@dataIn)
-    nslog(string("got data from planner"))
-
-    'if we're done, make sure we stop!!!
-    if (dataIn[CONTROL] == STOP)
-      set_wheel_speeds(0, 0)
-      Beeper.Shutdown
-      return
     
-    'else keep going
-    turn_val := dataIn[ROTATION_I]
-    RBC.DebugLongCR(turn_val)
     
-    collecting_data := NO 'reset this value
+    ' Stop the servos and then ask for a new command
+    set_wheel_speeds(0, 0)
+    ask_pc_for_instructions(NO)
     
-    case (turn_val)
-      ROTATE_NONE:
-        turning_count := 0
-      ROTATE_SMALL:
-        turning_count := TURN_SMALL
-        turning_left := NO
+    ' Now process the response
+    process_pc_instructions
+    
+    
+    ' reset any control counters
+    turning_count := 0
+    forward_count := 0
+    stay_still_count := 0
+    did_find_block := NO
+    
+    
+    ' now deal with the instructions based on the control bit
+    case (pc_control_command)
+      
+      STAY_STILL:
+        stay_still_count := STAY_STILL_COUNT
         next
-      ROTATE_BACK_SMALL:
-        turning_count := TURN_SMALL
-        turning_left := YES
+      
+      ASK_AGAIN:
         next
-      ROTATE_FULL:
-        turning_count := 6 * TURN_SMALL
-        turning_left := NO
-        collecting_data := YES
-        nslog(string("WILL ROTATE FULL!!!!!!!!!!"))
-        next
-
-
-    move_val := dataIn[MOVE]
-    case (move_val)
-      MOVE_NONE:
-        forward_count := 0
-      MOVE_SMALL:
-        forward_count := MOVE_SMALL_COUNT
+        
+      GO:
+        ' some kind of movement... need to check
+        case (pc_rotate_command)
+          ROTATE_NONE: 'do nothing important
+          ROTATE_SMALL:
+            turning_count := TURN_SMALL
+            turning_left := NO
+            next
+          ROTATE_BACK_SMALL:
+            turning_count := TURN_SMALL
+            turning_left := YES
+            next
+        
+        
+        ' not rotation, so let's check movement then
+        case (pc_move_command)
+          MOVE_NONE:
+            forward_count := 0
+          MOVE_SMALL:
+            forward_count := MOVE_SMALL_COUNT
+            next 'ignoring the "REVERSE_BIG" command when we're all done?
+        
+        
+      SEEK_BLOCK:
+        do_seek_block ' enters its own run-loop where it doesn't break out until it's found a block and clasped the grippers
+      DROP_BLOCK:
+        do_drop_block ' enters its own run-loop where it moves and drops off a block and breaks out of it when it's done.
+      ALL_DONE:
+        set_wheel_speeds(0, 0)
+        Beeper.Shutdown
 
     
 
-PUB do_collect_data
-  sonar_reading := 0
-  ir_reading := 0
+
+PUB ask_pc_for_instructions (did_find_block)
   
-  
-  sonar_reading := Sonar.DistanceCM
-  if (sonar_reading < 0)
-    'too close
-    sonar_reading := INVALID_READING
+  if (did_find_block == YES)
+    out_packet[0] := STATUS_BLOCK_FOUND / 256
+    out_packet[1] := STATUS_BLOCK_FOUND // 256
   else
-    'it was valid!
-    
-  ir_reading := Dirrs.DistanceCM
-  if (ir_reading < 2)
-    'too close
-    ir_reading := INVALID_READING
-  else
-    'it was valid
-
-PUB send_data_to_pc
-  out_packet[0] := sonar_reading / 256
-  out_packet[1] := sonar_reading // 256
-  out_packet[2] := ir_reading / 256
-  out_packet[3] := ir_reading // 256
-  out_packet[4] := collecting_data / 256
-  out_packet[5] := collecting_data // 256
+    out_packet[0] := STATUS_COMMAND_REQUEST / 256
+    out_packet[1] := STATUS_COMMAND_REQUEST // 256
   
   RBC.SendDataToPC(@out_packet, 6, RBC#OUTPUT_TO_LOG)
 
+
+PUB process_pc_instructions
+  
+  RBC.ReceiveData(@dataIn)
+  
+  ' Does this need to be offset???
+  
+  pc_move_command = dataIn[MOVE_INDEX]
+  pc_rotate_command = dataIn[ROTATE_INDEX]
+  pc_control_command = dataIn[CONTROL_INDEX]
+  
+
+
+PRI do_seek_block | found_block, cam_x
+  
+  Servos.open_grippers
+  found_block := NO
+  cam_x = 0
+  
+  repeat until (found_block == YES)
+    
+    ' try looking for a block
+    if (BlockSensor.Detect)
+      Servos.close_grippers
+      found_block := YES
+      next
+    
+    
+    ' see if we can find where a block is using the camera
+    Camera.TrackColor
+    if (Camera.GetConfidence > good_confidence)
+      cam_x := Camera.GetCenterX
+      
+      
+      if (cam_x > BLOCK_LEFT_SIDE)
+        do_turn_left
+      elseif (cam_x < BLOCK_RIGHT_SIDE)
+        do_right_turn
+      else
+        do_slow_forward
+    
+    else
+      ' don't see the block... keep moving forward. it might appear
+        do_slow_forward
+  
+  Servos.close_grippers 
+  Servos.SetHeadPitch(HEAD_TILT_MID)
+  did_find_block := YES ' so this can be sent to the PC on the next iteration 
+
+
+'moving functions for the block seeking
+PRI do_left_turn | i_turn_count
+  
+  
+  i_turn_count := TURN_COUNT_SMALL
+  repeat until (i_turn_count == 0)
+    i_turn_count--
+    turnLeft
+  
+  ' reset the speeds so the robot isn't still turning :)
+  set_wheel_speeds(0, 0)
+
+
+
+PRI do_right_turn | i_turn_count
+
+  i_turn_count := TURN_COUNT_SMALL
+  repeat until (i_turn_count == 0)
+    i_turn_count--
+    turnRight
+  
+  ' reset the speeds so the robot isn't still turning :)
+  set_wheel_speeds(0, 0)
+
+PRI do_slow_forward | i_move_count
+  
+  i_move_count := 10
+  repeat until (i_move_count == 0)
+    set_wheel_speeds(5, 5)
+  
+  ' stop him again
+  set_wheel_speeds(0, 0)
 
 
 PUB do_moving_as_needed

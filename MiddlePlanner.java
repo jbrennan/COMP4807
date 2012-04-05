@@ -9,20 +9,6 @@ public class MiddlePlanner extends Planner {
 	final byte ROTATE_BACK_BIG = 4;
 	final byte ROTATE_FULL = 5;
 
-	final byte MOVE_NONE = 0;
-	final byte BE_STILL = 0;
-	final byte MOVE_SMALL = 1;
-	
-	final byte STOP = 88;
-	final byte GO = 0;
-	final byte RECORD = 89;
-	final byte SEEK_NONE = 90;
-	final byte SEEK_BLOCK = 91;
-	final byte DROP_BLOCK = 92;
-
-	final int ROTATION = 0;
-	final int MOVE = 1;
-	final int CONTROL = 2;
 	
 	final int TOTAL_BLOCKS = 8;
 	
@@ -124,6 +110,37 @@ public class MiddlePlanner extends Planner {
 		sendDataToRobot(outData);
 	}
 	
+	// byte indices
+	final int ROTATION = 0;
+	final int MOVE = 1;
+	final int CONTROL = 2;
+	
+	// Movement instructions
+	final byte MOVE_NONE = 0;
+	final byte MOVE_SMALL = 1;
+	
+	// Rotation instructions
+	final byte ROTATE_NONE = 0;
+	final byte ROTATE_SMALL = 1;
+	final byte ROTATE_BACK_SMALL = 2;
+	
+	
+	// Command instructions
+	final byte STAY_STILL = 0;
+	final byte ASK_AGAIN = 1;
+	final byte GO = 2;
+	final byte SEEK_BLOCK = 3;
+	final byte DROP_BLOCK = 4;
+	final byte ALL_DONE = 100;
+	
+	
+	// From the robot
+	final int STATUS = 0;
+	
+	// Status codes
+	final int STATUS_COMMAND_REQUEST = 0;
+	final int STATUS_BLOCK_FOUND = 1;
+	
 	
 	void goalNavigateAlongCurrentPathForRobotPoint(Pose pose, RobotState nextState) {
 		// This is basically Goal-navigation now.
@@ -206,6 +223,17 @@ public class MiddlePlanner extends Planner {
 		}
 		
 		return processed;
+	}
+	
+	
+	private void computePathFromRobotPoseToEndGoal(Pose currentRobotPose, RobotState state) {
+		
+		// Based on the current state and the current location, compute a path the robot needs to take to reach
+		// the goal (the goal depends on the current state!).
+		
+		switch (state) {
+			
+		}
 	}
 	
 	
@@ -326,7 +354,7 @@ public class MiddlePlanner extends Planner {
 				
 				// He's either found or hasn't found a block, but he's already looked.
 				// Now we tell him to just wait a sec and then ask again for the next state
-				sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, STAY_STILL);
+				sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
 				break;
 
 			}
