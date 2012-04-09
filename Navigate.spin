@@ -320,25 +320,37 @@ PRI do_seek_block | found_block, cam_x, temp_holder, temp_con
       do_slow_forward
         
 
-  
+  set_wheel_speeds(0, 0)
   nslog(string("out of the loop"))
   close_grippers 
   Servos.SetHeadPitch(HEAD_TILT_MID)
   did_find_block := YES ' so this can be sent to the PC on the next iteration 
 
 
-PRI do_drop_block
-  nslog(string("DO DROP BLOCK ISNT IMPLEMENTED"))
+PRI do_drop_block | back_count
+  nslog(string("dropping block and backing up"))
+  ' drop the block, back up a bit, and then close the grippers
+  open_grippers
+  back_count := 15
+  repeat until (back_count == 0)
+    back_count := back_count - 1
+    set_wheel_speeds(-8, -8)
+  
+  set_wheel_speeds(0, 0)
+  close_grippers
 
 
 PRI open_grippers
   Servos.SetLeftGripper(LEFT_GRIPPER_OPEN)
   Servos.SetRightGripper(RIGHT_GRIPPER_OPEN)
   
+
 PRI close_grippers
   Servos.SetLeftGripper(LEFT_GRIPPER_CLOSED)
   Servos.SetRightGripper(RIGHT_GRIPPER_CLOSED)
 'moving functions for the block seeking
+
+
 PRI do_left_turn | i_turn_count
   
   
