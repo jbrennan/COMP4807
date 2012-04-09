@@ -85,6 +85,11 @@ public class MiddlePlanner extends Planner {
 	Goal currentGoal;
 	int currentGoalNumber;
 	
+	ArrayList<Goal> topPickupGoals;
+	ArrayList<Goal> topDropoffGoals;
+	ArrayList<Goal> bottomPickupGoals;
+	ArrayList<Goal> bottomDropoffGoals;
+	
 	
 	// Flags
 	boolean _allDone;
@@ -114,10 +119,32 @@ public class MiddlePlanner extends Planner {
 			currentGoal = topPickupZone;
 			currentGoalNumber = 0;
 		}
-		System.out.println("Got 1");
+		
 		this.currentRobotState = RobotState.RobotStateInvalid;
 		setRobotState(RobotState.RobotStateStart);
-		System.out.println("Got 2");
+		
+		topPickupGoals = new ArrayList<Goal>();
+		topDropoffGoals = new ArrayList<Goal>();
+		bottomPickupGoals = new ArrayList<Goal>();
+		bottomDropoffGoals = new ArrayList<Goal>();
+		
+		
+		// Fill out the drop goals.. these are the destinations for drop zones
+		// Offset these goals for where the robot should actually stop?
+		for (int i = 0; i < 4; i++) {
+			int x = 580;
+			int y = 520 + (i * 25);
+			bottomDropoffGoals.add(new Goal(new Point(x, y)));
+		}
+		
+		
+		for (int i = 0; i < 4; i++) {
+			int x = 60;
+			int y = 900 - (i * 25);
+			topDropoffGoals.add(new Goal(new Point(x, y)));
+		}
+		
+		
 		
 		// Hack just to get the robot to switch modes on its own for testing
 		new Thread(new Runnable() {
@@ -213,7 +240,7 @@ public class MiddlePlanner extends Planner {
 		// First see if he's close enough to the goal, in which case
 		// transition to the next State.
 		Point robotPoint = new Point(pose.x, pose.y);
-		Goal currentGoal = goals.get(currentGoalNumber); // TODO: verify this
+		Goal currentGoal = goals.get(0); // TODO: Change this if we're dealing with multiple goals!!!
 		
 		if (currentGoal.isPointCloseEnoughToGoal(robotPoint)) {
 			// Really, we have to make sure we do this for the WHOLE PATH OF GOALS
@@ -294,7 +321,64 @@ public class MiddlePlanner extends Planner {
 		// Based on the current state and the current location, compute a path the robot needs to take to reach
 		// the goal (the goal depends on the current state!).
 		
+		goals = new ArrayList<Goal>();
 		switch (state) {
+			case RobotStateDropBottom: {
+				
+				
+				
+				// Move in almost a straight line? Or just a straight line...
+				goals.add(bottomDropoffGoals.get(0));
+				
+				// Must remember to remove this goal from the bottomDropoffGoals list... do it now?
+				bottomDropoffGoals.remove(0);
+				
+				break;
+			}
+			
+			
+			case RobotStateSeekBottom: {
+				
+				
+				// Pickup the last item in this list
+				goals.add(bottomPickupGoals.get(bottomPickupGoals.size() - 1));
+				
+				bottomPickupGoals.remove(bottomPickupGoals.size() - 1);
+				
+				break;
+			}
+			
+			
+			case RobotStateDropTop: {
+				
+				goals.add(topDropoffGoals.get(0));
+				topDropoffGoals.remove(0);
+				
+				break;
+			}
+			
+			
+			case RobotStateSeekTop: {
+				
+				goals.add(topPickupGoals.get(topPickupGoals.size() - 1));
+				topPickupGoals.remove(topPickupGoals.size() - 1);
+				
+				break;
+			}
+			
+			
+			case RobotStateFinishedCycle: {
+				goals.add(new Goal(new Point(200, 700)));
+				
+				break;
+			}
+			
+			
+			default: {
+				System.out.println("Unhandled plan computation!!!!! " + state.toString());
+				null.toString(); // force a crash
+				break;
+			}
 			
 		}
 	}
@@ -312,7 +396,9 @@ public class MiddlePlanner extends Planner {
 				if ((_numberOfTopBlocksReady + _numberOfBottomBlocksReady) == TOTAL_BLOCKS && _topZoneUnlocked && _bottomZoneUnlocked) {
 					// transition to the next state
 					
+					
 					setRobotState(RobotState.RobotStateSeekTop);
+					computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStateSeekTop);
 				} else {
 					// Stay in the same state... don't tell the robot?
 					//this.currentRobotState = RobotStateStart;
@@ -338,53 +424,57 @@ public class MiddlePlanner extends Planner {
 				
 				// First see if he's close enough to the goal, in which case
 				// transition to the next State.
-				Point robotPoint = new Point(latestPose.x, latestPose.y);
-				Goal currentGoal = goals.get(currentGoalNumber); // TODO: verify this
 				
-				if (currentGoal.isPointCloseEnoughToGoal(robotPoint)) {
-					// We're close enough to change states
-					System.out.println("SeekTop: close enough to PickupZone");
-					
-					// Change state and reset some internal flags.
-					setRobotState(RobotState.RobotStatePickTop);
-					
-					// Just so we have some instructions to reply with
-					sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
-					
-					
-					
-				} else {
-					// We need to tell the robot to (keep) moving towards the Pickup Zone.
-					int robotCurrentAngle = latestPose.angle; // degrees
-					int angleToTheGoal = (int)getAngle(currentGoal.location, robotPoint);
-					int distanceToGoal = distance(currentGoal.location.x - robotPoint.x,
-													currentGoal.location.y -robotPoint.y);
-					System.out.println("Distance to goal (" + currentGoal.location.x + ", " + currentGoal.location.y + ") is: " + distanceToGoal);
-					
-					int RANGE = 5;
-					byte rotation = ROTATE_NONE;
-					byte movement = MOVE_NONE;
-					 
-					int angleDifference = angleToTheGoal - robotCurrentAngle;
-					System.out.println("Angle diff: " + angleDifference);
-					
-					if (Math.abs(angleDifference) < RANGE) {
-						rotation = ROTATE_NONE;
-						movement = MOVE_SMALL;
-						System.out.println("Should move");
-					} else if (angleDifference > 0) {
-						rotation = angleDifference < 180? ROTATE_BACK_SMALL : ROTATE_SMALL;
-						movement = MOVE_NONE;
-					} else {
-						rotation = ROTATE_SMALL; // might need to do like above...
-						movement = MOVE_NONE;
-					}
-					
-					
-					// Now send this command to the robot
-					sendInstructionsToRobot(movement, rotation, GO);
-					
-				}
+				goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStatePickTop);
+				
+				
+				// Point robotPoint = new Point(latestPose.x, latestPose.y);
+				// Goal currentGoal = goals.get(currentGoalNumber); // TODO: verify this
+				// 
+				// if (currentGoal.isPointCloseEnoughToGoal(robotPoint)) {
+				// 	// We're close enough to change states
+				// 	System.out.println("SeekTop: close enough to PickupZone");
+				// 	
+				// 	// Change state and reset some internal flags.
+				// 	setRobotState(RobotState.RobotStatePickTop);
+				// 	
+				// 	// Just so we have some instructions to reply with
+				// 	sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
+				// 	
+				// 	
+				// 	
+				// } else {
+				// 	// We need to tell the robot to (keep) moving towards the Pickup Zone.
+				// 	int robotCurrentAngle = latestPose.angle; // degrees
+				// 	int angleToTheGoal = (int)getAngle(currentGoal.location, robotPoint);
+				// 	int distanceToGoal = distance(currentGoal.location.x - robotPoint.x,
+				// 									currentGoal.location.y -robotPoint.y);
+				// 	System.out.println("Distance to goal (" + currentGoal.location.x + ", " + currentGoal.location.y + ") is: " + distanceToGoal);
+				// 	
+				// 	int RANGE = 5;
+				// 	byte rotation = ROTATE_NONE;
+				// 	byte movement = MOVE_NONE;
+				// 	 
+				// 	int angleDifference = angleToTheGoal - robotCurrentAngle;
+				// 	System.out.println("Angle diff: " + angleDifference);
+				// 	
+				// 	if (Math.abs(angleDifference) < RANGE) {
+				// 		rotation = ROTATE_NONE;
+				// 		movement = MOVE_SMALL;
+				// 		System.out.println("Should move");
+				// 	} else if (angleDifference > 0) {
+				// 		rotation = angleDifference < 180? ROTATE_BACK_SMALL : ROTATE_SMALL;
+				// 		movement = MOVE_NONE;
+				// 	} else {
+				// 		rotation = ROTATE_SMALL; // might need to do like above...
+				// 		movement = MOVE_NONE;
+				// 	}
+				// 	
+				// 	
+				// 	// Now send this command to the robot
+				// 	sendInstructionsToRobot(movement, rotation, GO);
+				// 	
+				// }
 				
 				
 				break;
