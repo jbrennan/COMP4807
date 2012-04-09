@@ -51,6 +51,7 @@ public class MiddlePlanner extends Planner {
 		RobotStateDropTop,
 		RobotStateDoActualDropTop,
 		RobotStateFinishedCycle,
+		RobotStatePark,
 		RobotStateEnd
 	}
 	
@@ -59,11 +60,6 @@ public class MiddlePlanner extends Planner {
 
 	ArrayList<Pose> poses;
 	ArrayList<Goal> goals;
-	
-	
-	// Locks to ensure I don't collide with another station's robot.
-	boolean topZoneOpen = true;
-	boolean bottomZoneOpen = true;
 	
 	
 	// The goal areas for where I pick up the cylanders from other bots
@@ -298,7 +294,27 @@ public class MiddlePlanner extends Planner {
 	
 	
 	void announceCompletionToOtherStations() {
-		System.out.println("IMPLEMENT ME -- announceCompletionToOtherStations()");
+		
+		
+		
+		String data = StationMessage.FormatToMessage(StationMessage.STATION_2_DONE);
+		sendDataToStation(1, data);
+		sendDataToStation(3, data);
+	}
+	
+	
+	void announceDropoffAtPointToStation(Point point, int stationID) {
+		
+		MessageType messageType;
+		if (stationID == 1) {
+			messageType = StationMessage.STATION_2_RED_BLOCK_DROPPED_OFF;
+		} else {
+			
+			messageType = StationMessage.STATION_2_BLUE_BLOCK_DROPPED_OFF;
+			
+		}
+		
+		sendDataToStation(stationID, StationMessage.FormatToMessage(messageType, point.x, point.y));
 	}
 	
 	
@@ -367,7 +383,7 @@ public class MiddlePlanner extends Planner {
 			}
 			
 			
-			case RobotStateFinishedCycle: {
+			case RobotStatePark: {
 				goals.add(new Goal(new Point(200, 700)));
 				
 				break;
@@ -531,6 +547,9 @@ public class MiddlePlanner extends Planner {
 				} else {
 					// He's done it
 					System.out.println("DoActualDropBottom: Robot has dropped the block.");
+					
+					announceDropoffAtPointToStation(new Point(latestPose.x, latestPose.y), 3);
+					
 					setRobotState(RobotState.RobotStateSeekBottom);
 					computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStateSeekBottom);
 					sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
@@ -598,9 +617,16 @@ public class MiddlePlanner extends Planner {
 					sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, DROP_BLOCK);
 				} else {
 					// He's done it
-					System.out.println("DoActualDropTop: Robot has dropped the block.");
+					
+					_numberOfDeliveredBlocks++;
+					System.out.println("DoActualDropTop: Robot has dropped the block.(" + _numberOfDeliveredBlocks + "/" + TOTAL_BLOCKS);
+					
+					
+					// Tell the top station
+					announceDropoffAtPointToStation(new Point(latestPose.x, latestPose.y), 1);
+					
 					setRobotState(RobotState.RobotStateFinishedCycle);
-					computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStateFinishedCycle);
+					//computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStateFinishedCycle);
 					sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
 				}
 				
@@ -611,11 +637,11 @@ public class MiddlePlanner extends Planner {
 			
 			case RobotStateFinishedCycle: {
 				
-				
 				if (_numberOfDeliveredBlocks == TOTAL_BLOCKS) {
 					System.out.println("All the blocks have been delivered. Move out of the way and STOP");
-					setRobotState(RobotState.RobotStateEnd);
-					sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ALL_DONE);
+					setRobotState(RobotState.RobotStatePark);
+					computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStatePark);
+					sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
 				} else {
 					System.out.println("Finished a cycle. More blocks remaining.");
 					setRobotState(RobotState.RobotStateSeekTop);
@@ -627,9 +653,19 @@ public class MiddlePlanner extends Planner {
 			}
 			
 			
+			case RobotStatePark: {
+				
+
+				goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStateEnd);
+				
+				break;
+			}
+			
+			
 			case RobotStateEnd: {
 				
 				System.out.println("The robot is all done... why is it asking again?");
+				announceCompletionToOtherStations();
 				sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ALL_DONE);
 				break;
 				
@@ -639,7 +675,74 @@ public class MiddlePlanner extends Planner {
 	
 	
 	public void receivedDataFromStation(int stationId, String data) {
-		System.out.println("Got " + data + " from station: " + stationId);
+		//System.out.println("Got " + data + " from station: " + stationId);
+		
+		System.out.printf("Station ID: %d, Data: [ %s ]\n", stationId, data);
+		
+		StationMessage message = StationMessage.Parse(stationId, data);
+		int x = message.getX();
+		int y = message.getY();
+		
+		switch (message.getMessageType()) {
+			case STATION_1_RED_BLOCK_DROPPED_OFF: {
+				_numberOfTopBlocksReady++;
+				System.out.println("Got a new top block");
+				
+				// add it to the pickup list
+				
+				// Maybe have to offset these points to make it easier for bot to find them?
+				topPickupGoals.add(new Goal(new Point(x, y)));
+				
+				break;
+			}
+			
+			
+			case STATION_3_BLUE_BLOCK_DROPPED_OFF: {
+				_numberOfBottomBlocksReady++;
+				System.out.println("Got a new bottom block");
+				
+				// add it to the pickup list
+				
+				// Maybe have to offset these points to make it easier for bot to find them?
+				bottomPickupGoals.add(new Goal(new Point(x, y)));
+				break;
+			}
+			
+			
+			case ZONE_1_LOCKED: {
+				_topZoneUnlocked = false;
+				System.out.println("Locking the top zone");
+				break;
+			}
+			
+			
+			case ZONE_1_UNLOCKED: {
+				_topZoneUnlocked = true;
+				System.out.println("Unlocking the top zone");
+				break;
+			}
+			
+			
+			case ZONE_3_LOCKED: {
+				_bottomZoneUnlocked = false;
+				System.out.println("Locking the bottom zone");
+				break;
+			}
+			
+			
+			case ZONE_3_UNLOCKED: {
+				_bottomZoneUnlocked = true;
+				System.out.println("Unlocking the bottom zone");
+				break;
+			}
+			
+			
+			default: {
+				System.out.println("Got a message we don't care about: " + message.getMessage().toString());
+			}
+			
+		}
+		
 	}
 	
 	
