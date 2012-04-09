@@ -36,7 +36,9 @@ CON
 
   YES = 1
   NO = 0
-
+  RED = 185
+  BLUE = 16
+  GREEN = 16
   HALF_TURNING_AMOUNT = 150
   TURNING_AMOUNT = 310
   BACKWARDS_AMOUNT = 175
@@ -54,41 +56,44 @@ CON
   WHEEL_SPEED_LEFT = 17
   WHEEL_SPEED_RIGHT = 17
   
-  BLOCK_LEFT_SIDE = 65
-  BLOCK_RIGHT_SIDE 30
+  BLOCK_LEFT_SIDE = 55
+  BLOCK_RIGHT_SIDE = 30
 
   ' byte indices
-	ROTATION = 1
-	MOVE = 2
-	CONTROL = 3
-	
-	' Movement instructions
-	MOVE_NONE = 0
-	MOVE_SMALL = 1
-	
-	' Rotation instructions
-	ROTATE_NONE = 0
-	ROTATE_SMALL = 1
-	ROTATE_BACK_SMALL = 2
-	
-	
-	' Command instructions
-	STAY_STILL = 0  ' We're still waiting for the team to finish... set a timer and then ask again
-	ASK_AGAIN = 1   ' Transitioning states, just ask again on the next iteration through
-	GO = 2          ' Some kind of movement command (move or rotate)
-	SEEK_BLOCK = 3  ' The robot needs to go into seek mode and then pick up a block... collision detection too!
-	DROP_BLOCK = 4  ' The robot just needs to drop the block
-	ALL_DONE = 100  ' The robot has completed the tasks and should shut down.
-	
-	
-	' Status codes
-	STATUS_COMMAND_REQUEST = 0
-	STATUS_BLOCK_FOUND = 1
+  ROTATION_INDEX = 1
+  MOVE_INDEX = 2
+  CONTROL_INDEX = 3
+        
+  ' Movement instructions
+  MOVE_NONE = 0
+  MOVE_SMALL = 1
+        
+  ' Rotation instructions
+  ROTATE_NONE = 0
+  ROTATE_SMALL = 1
+  ROTATE_BACK_SMALL = 2
+        
+        
+  ' Command instructions
+  STAY_STILL = 0  ' We're still waiting for the team to finish... set a timer and then ask again
+  ASK_AGAIN = 1   ' Transitioning states, just ask again on the next iteration through
+  GO = 2          ' Some kind of movement command (move or rotate)
+  SEEK_BLOCK = 3  ' The robot needs to go into seek mode and then pick up a block... collision detection too!
+  DROP_BLOCK = 4  ' The robot just needs to drop the block
+  ALL_DONE = 100  ' The robot has completed the tasks and should shut down.
+
+   
+  ' Status codes
+  STATUS_COMMAND_REQUEST = 0
+  STATUS_BLOCK_FOUND = 1
   
   TURN_COUNT_SMALL = 10
-  TURN_SMALL = 20
+  TURN_SMALL = 5
   MOVE_SMALL_COUNT = 50
   STAY_STILL_COUNT = 100
+
+  GOOD_CONFIDENCE = 20
+  CAMERA_SENSITIVITY = 30
 
 
 VAR
@@ -100,6 +105,13 @@ VAR
   long cur_x, cur_y, cur_a, estimation_counter, pulse_left, pulse_right, turning_count, forward_count, turning_left
   byte turn_val, move_val
   long collecting_data, sonar_reading, ir_reading
+  long stay_still_counter
+
+  long did_find_block
+
+  long pc_move_command
+  long pc_rotate_command
+  long pc_control_command
 
 OBJ
   RBC: "RBC"
@@ -108,6 +120,8 @@ OBJ
   IRSensors: "IR8SensorArray"
   Sonar: "PingSensor"
   Dirrs: "DirrsSensor"
+  BlockSensor: "BlockSensor"
+  Camera: "CMUCam"
 
 
 PUB main
@@ -118,6 +132,7 @@ PUB main
   turning_count := 0
   forward_count := 0
   turning_left := NO
+  did_find_block := NO
   
 
   turn_val := 0
@@ -128,10 +143,15 @@ PUB main
  ' cur_y := dataIn[3]*256 + dataIn[4]
  ' cur_a := dataIn[5]*256 + dataIn[6]
 
-  Servos.Start(SERVO_STOPPED_LEFT, SERVO_STOPPED_RIGHT, true, true, true, false)
+  Servos.Start(SERVO_STOPPED_LEFT - 5, SERVO_STOPPED_RIGHT, true, true, true, true)
   Servos.SetRightGripper(100)
   Servos.SetLeftGripper(200)
+  Servos.SetHeadYaw(150)
  ' Servos.SetHeadPitch(125)
+
+  Camera.Start
+  Camera.SetTrackColor(RED, GREEN, BLUE, CAMERA_SENSITIVITY)
+ 
   Beeper.OK
 
   current_state := STATE_FOLLOW
@@ -158,8 +178,8 @@ PUB main
       next
     
     
-    if (stay_still_count > 0)
-      stay_still_count := stay_still_count - 1
+    if (stay_still_counter > 0)
+      stay_still_counter := stay_still_counter - 1
       nslog(string("staying still...."))
       next
 
@@ -170,7 +190,7 @@ PUB main
     
     ' Stop the servos and then ask for a new command
     set_wheel_speeds(0, 0)
-    ask_pc_for_instructions(NO)
+    ask_pc_for_instructions(did_find_block)
     
     ' Now process the response
     process_pc_instructions
@@ -179,7 +199,7 @@ PUB main
     ' reset any control counters
     turning_count := 0
     forward_count := 0
-    stay_still_count := 0
+    stay_still_counter := 0
     did_find_block := NO
     
     
@@ -187,7 +207,7 @@ PUB main
     case (pc_control_command)
       
       STAY_STILL:
-        stay_still_count := STAY_STILL_COUNT
+        stay_still_counter := STAY_STILL_COUNT
         next
       
       ASK_AGAIN:
@@ -227,9 +247,9 @@ PUB main
     
 
 
-PUB ask_pc_for_instructions (did_find_block)
+PUB ask_pc_for_instructions (found_a_block)
   
-  if (did_find_block == YES)
+  if (found_a_block == YES)
     out_packet[0] := STATUS_BLOCK_FOUND / 256
     out_packet[1] := STATUS_BLOCK_FOUND // 256
   else
@@ -245,81 +265,115 @@ PUB process_pc_instructions
   
   ' Does this need to be offset???
   
-  pc_move_command = dataIn[MOVE_INDEX]
-  pc_rotate_command = dataIn[ROTATE_INDEX]
-  pc_control_command = dataIn[CONTROL_INDEX]
+  pc_move_command := dataIn[MOVE_INDEX]
+  pc_rotate_command := dataIn[ROTATION_INDEX]
+  pc_control_command := dataIn[CONTROL_INDEX]
   
 
 
-PRI do_seek_block | found_block, cam_x
-  
-  Servos.open_grippers
+PRI do_seek_block | found_block, cam_x, temp_holder, temp_con
+
+  Servos.SetHeadPitch(HEAD_TILT_DOWN)
+  open_grippers
   found_block := NO
-  cam_x = 0
+  cam_x := 0
+  temp_holder := 99
+  temp_con := 98
   
+  nslog(string("GOING TO SEEK A BLOCK"))
   repeat until (found_block == YES)
     
     ' try looking for a block
+    temp_holder := BlockSensor.Detect
+    
+    RBC.DebugLongCR(temp_holder)
     if (BlockSensor.Detect)
-      Servos.close_grippers
+      close_grippers
       found_block := YES
-      next
+      nslog(string("YESSSS"))
+      quit
     
-    
+    nslog(string("gmmmmmm"))
     ' see if we can find where a block is using the camera
     Camera.TrackColor
-    if (Camera.GetConfidence > good_confidence)
+    temp_con := Camera.GetConfidence
+    nslog(string("confidence"))
+    RBC.DebugLongCR(temp_con)
+    
+    if (temp_con > GOOD_CONFIDENCE)
       cam_x := Camera.GetCenterX
+      nslog(string("SEE A BLOCK SOMEWHERE"))
+      RBC.DebugLongCR(cam_x)
       
       
       if (cam_x > BLOCK_LEFT_SIDE)
-        do_turn_left
+        nslog(string("turn left"))
+        do_left_turn
       elseif (cam_x < BLOCK_RIGHT_SIDE)
+        nslog(string("to the right"))
         do_right_turn
       else
         do_slow_forward
     
     else
       ' don't see the block... keep moving forward. it might appear
-        do_slow_forward
+      do_slow_forward
+        
+
   
-  Servos.close_grippers 
+  nslog(string("out of the loop"))
+  close_grippers 
   Servos.SetHeadPitch(HEAD_TILT_MID)
   did_find_block := YES ' so this can be sent to the PC on the next iteration 
 
 
+PRI do_drop_block
+  nslog(string("DO DROP BLOCK ISNT IMPLEMENTED"))
+
+
+PRI open_grippers
+  Servos.SetLeftGripper(LEFT_GRIPPER_OPEN)
+  Servos.SetRightGripper(RIGHT_GRIPPER_OPEN)
+  
+PRI close_grippers
+  Servos.SetLeftGripper(LEFT_GRIPPER_CLOSED)
+  Servos.SetRightGripper(RIGHT_GRIPPER_CLOSED)
 'moving functions for the block seeking
 PRI do_left_turn | i_turn_count
   
   
-  i_turn_count := TURN_COUNT_SMALL
+  i_turn_count := TURN_COUNT_SMALL + 6
   repeat until (i_turn_count == 0)
-    i_turn_count--
+    i_turn_count := i_turn_count - 1
     turnLeft
+    nslog(string("L"))
   
   ' reset the speeds so the robot isn't still turning :)
-  set_wheel_speeds(0, 0)
+ ' set_wheel_speeds(0, 0)
 
 
 
 PRI do_right_turn | i_turn_count
 
-  i_turn_count := TURN_COUNT_SMALL
+  i_turn_count := TURN_COUNT_SMALL + 6
   repeat until (i_turn_count == 0)
-    i_turn_count--
+    i_turn_count := i_turn_count - 1
     turnRight
+    nslog(string("R"))
   
   ' reset the speeds so the robot isn't still turning :)
-  set_wheel_speeds(0, 0)
+  'set_wheel_speeds(0, 0)
 
 PRI do_slow_forward | i_move_count
   
   i_move_count := 10
   repeat until (i_move_count == 0)
-    set_wheel_speeds(5, 5)
+    set_wheel_speeds(8, 8)
+    nslog(string("m"))
+    i_move_count := i_move_count - 1
   
   ' stop him again
-  set_wheel_speeds(0, 0)
+ ' set_wheel_speeds(0, 0)
 
 
 PUB do_moving_as_needed
@@ -346,18 +400,18 @@ PRI set_speeds(left, right)
 PRI do_turn
   if (turning_left)
     nslog(string("lft"))
-    turnLeft(0)
+    turnLeft
   else
     nslog(string("rght"))
-    turnRight(0)
+    turnRight
 
 
-PUB turnLeft(stepAmount)
+PUB turnLeft
   'Servos.SetSpeeds(0, 17)
   set_wheel_speeds(-5, WHEEL_SPEED_RIGHT)
  
         
-PUB turnRight(stepAmount)
+PUB turnRight
   'Servos.SetSpeeds(14, 0)
   set_wheel_speeds(WHEEL_SPEED_LEFT, -5)
 
