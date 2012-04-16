@@ -78,8 +78,8 @@ public class MiddlePlanner extends Planner {
 	int _numberOfDeliveredBlocks;
 	
 	
-	Goal currentGoal;
-	int currentGoalNumber;
+	//Goal currentGoal;
+	//int currentGoalNumber;
 	
 	ArrayList<Goal> topPickupGoals;
 	ArrayList<Goal> topDropoffGoals;
@@ -109,11 +109,11 @@ public class MiddlePlanner extends Planner {
 		}
 		
 		if (goals.size() > 0) {
-			currentGoal = goals.get(0);
-			currentGoalNumber = 0;
+			//currentGoal = goals.get(0);
+			//currentGoalNumber = 0;
 		} else {
-			currentGoal = topPickupZone;
-			currentGoalNumber = 0;
+			//currentGoal = topPickupZone;
+			//currentGoalNumber = 0;
 		}
 		
 		this.currentRobotState = RobotState.RobotStateInvalid;
@@ -128,21 +128,22 @@ public class MiddlePlanner extends Planner {
 		// Fill out the drop goals.. these are the destinations for drop zones
 		// Offset these goals for where the robot should actually stop?
 		for (int i = 0; i < 4; i++) {
-			int x = 580;
-			int y = 520 + (i * 25);
+			int x = 550;
+			int y = 665 + (i * 40);
 			bottomDropoffGoals.add(new Goal(new Point(x, y)));
 		}
 		
 		
 		for (int i = 0; i < 4; i++) {
 			int x = 60;
-			int y = 900 - (i * 25);
+			int y = 850 - (i * 40);
 			topDropoffGoals.add(new Goal(new Point(x, y)));
 		}
 		
 		
 		
 		// Hack just to get the robot to switch modes on its own for testing
+		final MiddlePlanner that = this;
 		new Thread(new Runnable() {
 			
 			@Override
@@ -151,10 +152,47 @@ public class MiddlePlanner extends Planner {
 				try {
 					Thread.sleep(3000);
 					System.out.println("Thread done sleeping. Going to trick the robot into starting!");
-					_numberOfBottomBlocksReady = TOTAL_BLOCKS;
+					
+					String d;
+					
+					d = StationMessage.FormatToMessage(MessageType.STATION_1_RED_BLOCK_DROPPED_OFF, 60, 556);
+					that.receivedDataFromStation(1, d);
+					
+					d = StationMessage.FormatToMessage(MessageType.STATION_1_RED_BLOCK_DROPPED_OFF, 60, 577);
+					that.receivedDataFromStation(1, d);
+					
+					d = StationMessage.FormatToMessage(MessageType.STATION_1_RED_BLOCK_DROPPED_OFF, 60, 600);
+					that.receivedDataFromStation(1, d);
+					
+					d = StationMessage.FormatToMessage(MessageType.STATION_1_RED_BLOCK_DROPPED_OFF, 60, 620);
+					that.receivedDataFromStation(1, d);
+					
+					
+					d = StationMessage.FormatToMessage(MessageType.STATION_3_BLUE_BLOCK_DROPPED_OFF, 568, 929);
+					that.receivedDataFromStation(2, d);
+					
+					d = StationMessage.FormatToMessage(MessageType.STATION_3_BLUE_BLOCK_DROPPED_OFF, 568, 912);
+					that.receivedDataFromStation(2, d);
+					
+					d = StationMessage.FormatToMessage(MessageType.STATION_3_BLUE_BLOCK_DROPPED_OFF, 568, 894);
+					that.receivedDataFromStation(2, d);
+					
+					d = StationMessage.FormatToMessage(MessageType.STATION_3_BLUE_BLOCK_DROPPED_OFF, 568, 875);
+					that.receivedDataFromStation(2, d);
+					
+					
+					
+					//_numberOfBottomBlocksReady = TOTAL_BLOCKS;
 					_topZoneUnlocked = true;
 					_bottomZoneUnlocked = true;
 					//setRobotState(RobotState.RobotStatePickTop);
+					
+					
+					// add some blocks
+					//topPickupGoals.add(new Goal(new Point(60, 542)));
+					
+					//bottomPickupGoals.add(new Goal(new Point(560, 916)));
+					
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					System.out.println("There was an error in the thread!!");
@@ -192,17 +230,18 @@ public class MiddlePlanner extends Planner {
 	}
 	
 	
-	void orientToGoalForPose(Pose pose, RobotState nextState) {
+	void orientToGoalForPose(Pose pose, Goal goal, RobotState nextState) {
 		int robotCurrentAngle = pose.angle; // degrees
-		int angleToTheGoal = (int)getAngle(currentGoal.location, robotPoint);
+		Point robotPoint = new Point(pose.x, pose.y);
+		int angleToTheGoal = (int)getAngle(goal.location, robotPoint);
 
 		
-		int RANGE = 5;
+		int RANGE = 10;
 		byte rotation = ROTATE_NONE;
 		byte movement = MOVE_NONE;
 		 
 		int angleDifference = angleToTheGoal - robotCurrentAngle;
-		
+		System.out.println("Angle diff: " + angleDifference);
 		if (Math.abs(angleDifference) < RANGE) {
 			
 			
@@ -221,7 +260,7 @@ public class MiddlePlanner extends Planner {
 			rotation = angleDifference < 180? ROTATE_BACK_SMALL : ROTATE_SMALL;
 			
 		} else {
-			rotation = ROTATE_SMALL; // might need to do like above...
+			rotation = angleDifference < -180? ROTATE_BACK_SMALL : ROTATE_SMALL; // might need to do like above...
 		}
 		
 		sendInstructionsToRobot(movement, rotation, GO);
@@ -230,7 +269,7 @@ public class MiddlePlanner extends Planner {
 
 	
 	
-	void goalNavigateAlongCurrentPathForRobotPoint(Pose pose, RobotState nextState) {
+	void goalNavigateAlongCurrentPathForRobotPoint(Pose pose, RobotState nextState, boolean forceNextState) {
 		// This is basically Goal-navigation now.
 		
 		// First see if he's close enough to the goal, in which case
@@ -246,7 +285,16 @@ public class MiddlePlanner extends Planner {
 			
 			
 			// Make sure we're properly oriented to the goal so we can just move forward when seeking a block. Then transition in this method.
-			orientToGoalForPose(pose, nextState);
+			if (forceNextState) {
+				// We're good!!
+				// Change state and reset some internal flags.
+				setRobotState(nextState);
+				
+				// Just so we have some instructions to reply with
+				sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
+			} else {
+				orientToGoalForPose(pose, currentGoal, nextState);
+			}
 			
 		} else {
 			// We need to tell the robot to (keep) moving towards the Drop Zone.
@@ -269,6 +317,7 @@ public class MiddlePlanner extends Planner {
 				rotation = angleDifference < 180? ROTATE_BACK_SMALL : ROTATE_SMALL;
 				movement = MOVE_NONE;
 			} else {
+				System.out.println("Less than 0..." + angleDifference);
 				rotation = ROTATE_SMALL; // might need to do like above...
 				movement = MOVE_NONE;
 			}
@@ -287,6 +336,7 @@ public class MiddlePlanner extends Planner {
 		
 		
 		// Just keep updating to the latest pose... I suppose we could just keep a reference to the latest one. Whatever.
+		if (p.x < 0 || p.y < 0) return; // skip invalid poses
 		poses.add(p);
 		
 		
@@ -295,9 +345,16 @@ public class MiddlePlanner extends Planner {
 	
 	void announceCompletionToOtherStations() {
 		
+		String data1 = StationMessage.FormatToMessage(MessageType.ZONE_2_1_UNLOCKED);
+		sendDataToStation(1, data1);
+		sendDataToStation(3, data1);
+		
+		data1 = StationMessage.FormatToMessage(MessageType.ZONE_2_2_UNLOCKED);
+		sendDataToStation(1, data1);
+		sendDataToStation(3, data1);
 		
 		
-		String data = StationMessage.FormatToMessage(StationMessage.STATION_2_DONE);
+		String data = StationMessage.FormatToMessage(MessageType.STATION_2_DONE);
 		sendDataToStation(1, data);
 		sendDataToStation(3, data);
 	}
@@ -307,10 +364,10 @@ public class MiddlePlanner extends Planner {
 		
 		MessageType messageType;
 		if (stationID == 1) {
-			messageType = StationMessage.STATION_2_RED_BLOCK_DROPPED_OFF;
+			messageType = MessageType.STATION_2_RED_BLOCK_DROPPED_OFF;
 		} else {
 			
-			messageType = StationMessage.STATION_2_BLUE_BLOCK_DROPPED_OFF;
+			messageType = MessageType.STATION_2_BLUE_BLOCK_DROPPED_OFF;
 			
 		}
 		
@@ -377,6 +434,7 @@ public class MiddlePlanner extends Planner {
 			case RobotStateSeekTop: {
 				
 				goals.add(topPickupGoals.get(topPickupGoals.size() - 1));
+				System.out.println("top goal is: " + goals.get(0).toString());
 				topPickupGoals.remove(topPickupGoals.size() - 1);
 				
 				break;
@@ -384,7 +442,7 @@ public class MiddlePlanner extends Planner {
 			
 			
 			case RobotStatePark: {
-				goals.add(new Goal(new Point(200, 700)));
+				goals.add(new Goal(new Point(160, 750)));
 				
 				break;
 			}
@@ -392,10 +450,17 @@ public class MiddlePlanner extends Planner {
 			
 			default: {
 				System.out.println("Unhandled plan computation!!!!! " + state.toString());
-				null.toString(); // force a crash
+				System.exit(-1); // force a crash
 				break;
 			}
 			
+
+			
+		}
+		
+		System.out.println("New goal path looks like:");
+		for (Goal g : goals) {
+			System.out.println(g.toString());
 		}
 	}
 	
@@ -414,6 +479,12 @@ public class MiddlePlanner extends Planner {
 					
 					
 					setRobotState(RobotState.RobotStateSeekTop);
+					String data1 = StationMessage.FormatToMessage(MessageType.ZONE_2_1_LOCKED);
+					sendDataToStation(1, data1);
+					sendDataToStation(3, data1);
+					data1 = StationMessage.FormatToMessage(MessageType.ZONE_2_2_LOCKED);
+					sendDataToStation(1, data1);
+					sendDataToStation(3, data1);
 					computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStateSeekTop);
 				} else {
 					// Stay in the same state... don't tell the robot?
@@ -441,7 +512,7 @@ public class MiddlePlanner extends Planner {
 				// First see if he's close enough to the goal, in which case
 				// transition to the next State.
 				
-				goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStatePickTop);
+				goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStatePickTop, false);
 				
 				
 				// Point robotPoint = new Point(latestPose.x, latestPose.y);
@@ -533,7 +604,7 @@ public class MiddlePlanner extends Planner {
 			
 			case RobotStateDropBottom: {
 				// Moving towards the bottom drop zone
-				goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStateDoActualDropBottom);
+				goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStateDoActualDropBottom, true);
 				// When do we tell the robot to ACTUALLY drop it?
 				break;
 			}
@@ -547,7 +618,7 @@ public class MiddlePlanner extends Planner {
 				} else {
 					// He's done it
 					System.out.println("DoActualDropBottom: Robot has dropped the block.");
-					
+					_numberOfDeliveredBlocks++;
 					announceDropoffAtPointToStation(new Point(latestPose.x, latestPose.y), 3);
 					
 					setRobotState(RobotState.RobotStateSeekBottom);
@@ -562,7 +633,7 @@ public class MiddlePlanner extends Planner {
 			case RobotStateSeekBottom: {
 				
 				// Seek to the bottom area
-				goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStatePickBottom);
+				goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStatePickBottom, false);
 				break;
 				
 			}
@@ -603,7 +674,7 @@ public class MiddlePlanner extends Planner {
 			case RobotStateDropTop: {
 				
 				// Move towards the dropoff zone, then transition to the FinishedCycle state, where the block is dropped and we decide what's next
-				goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStateDoActualDropTop);
+				goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStateDoActualDropTop, true);
 				
 				break;
 			}
@@ -656,7 +727,7 @@ public class MiddlePlanner extends Planner {
 			case RobotStatePark: {
 				
 
-				goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStateEnd);
+				goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStateEnd, true);
 				
 				break;
 			}
@@ -677,7 +748,8 @@ public class MiddlePlanner extends Planner {
 	public void receivedDataFromStation(int stationId, String data) {
 		//System.out.println("Got " + data + " from station: " + stationId);
 		
-		System.out.printf("Station ID: %d, Data: [ %s ]\n", stationId, data);
+		//System.out.printf("Station ID: %d, Data: [ %s ]\n", stationId, data);
+		System.out.println("StationID: " + stationId + data);
 		
 		StationMessage message = StationMessage.Parse(stationId, data);
 		int x = message.getX();
@@ -738,7 +810,7 @@ public class MiddlePlanner extends Planner {
 			
 			
 			default: {
-				System.out.println("Got a message we don't care about: " + message.getMessage().toString());
+				System.out.println("Got a message we don't care about: " + message.getMessageType().toString());
 			}
 			
 		}
@@ -786,12 +858,16 @@ public class MiddlePlanner extends Planner {
 		}
 		
 		public boolean isPointCloseEnoughToGoal(Point p) {
-			final int RANGE = 20;
+			final int RANGE = 30;
 			return (inAbsoluteRange(p.x, this.location.x, RANGE) && inAbsoluteRange(p.y, this.location.y, RANGE));
 		}
 		
 		private boolean inAbsoluteRange(int a, int b, int range) {
 			return (Math.abs((a - b)) < range);
+		}
+		
+		public String toString() {
+			return location.toString();
 		}
 	}
 	

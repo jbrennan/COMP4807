@@ -1,6 +1,10 @@
 CON
   _clkmode = xtal1 + pll16x     ' This is required for proper timing
   _xinfreq = 5_000_000          ' This is required for proper timing
+
+  CLK_FREQ = ((_clkmode-xtal1)>>6)*_xinfreq
+  MS_001 = CLK_FREQ / 1_000
+  
   SERVO_STOPPED_LEFT = 750
   SERVO_STOPPED_RIGHT = 750
 
@@ -86,6 +90,7 @@ CON
   ' Status codes
   STATUS_COMMAND_REQUEST = 0
   STATUS_BLOCK_FOUND = 1
+  STATUS_BACKUP_DONE = 2
   
   TURN_COUNT_SMALL = 10
   TURN_SMALL = 5
@@ -107,7 +112,7 @@ VAR
   long collecting_data, sonar_reading, ir_reading
   long stay_still_counter
 
-  long did_find_block
+  long did_find_block, have_reversed
 
   long pc_move_command
   long pc_rotate_command
@@ -133,6 +138,7 @@ PUB main
   forward_count := 0
   turning_left := NO
   did_find_block := NO
+  have_reversed := NO
   
 
   turn_val := 0
@@ -164,7 +170,8 @@ PUB main
     if (turning_count > 0)
       turning_count := turning_count - 1
       RBC.DebugLong(turning_count)
-      nslog(string(" :in the turning count loop"))
+      'nslog(string(" :in the turning count loop"))
+      pauseMS(50)
       do_turn
       
       next
@@ -173,14 +180,16 @@ PUB main
     'move forward as needed
     if (forward_count > 0)
       forward_count := forward_count - 1
-      nslog(string("in the moving loop"))
+      'nslog(string("in the moving loop"))
+      pauseMS(50)
       do_move_forward
       next
     
     
     if (stay_still_counter > 0)
       stay_still_counter := stay_still_counter - 1
-      nslog(string("staying still...."))
+      'nslog(string("staying still...."))
+      pauseMS(50)
       next
 
 
@@ -201,6 +210,7 @@ PUB main
     forward_count := 0
     stay_still_counter := 0
     did_find_block := NO
+    have_reversed := NO
     
     
     ' now deal with the instructions based on the control bit
@@ -243,6 +253,7 @@ PUB main
       ALL_DONE:
         set_wheel_speeds(0, 0)
         Beeper.Shutdown
+        return
 
     
 
@@ -252,11 +263,13 @@ PUB ask_pc_for_instructions (found_a_block)
   if (found_a_block == YES)
     out_packet[0] := STATUS_BLOCK_FOUND / 256
     out_packet[1] := STATUS_BLOCK_FOUND // 256
+  elseif (have_reversed == YES)
+    out_packet[0] := STATUS_BACKUP_DONE / 256
+    out_packet[1] := STATUS_BACKUP_DONE // 256
   else
     out_packet[0] := STATUS_COMMAND_REQUEST / 256
     out_packet[1] := STATUS_COMMAND_REQUEST // 256
-  
-  RBC.SendDataToPC(@out_packet, 6, RBC#OUTPUT_TO_LOG)
+  RBC.SendDataToPC(@out_packet, 6, RBC#OUTPUT_TO_NONE)
 
 
 PUB process_pc_instructions
@@ -293,7 +306,7 @@ PRI do_seek_block | found_block, cam_x, temp_holder, temp_con
       nslog(string("YESSSS"))
       quit
     
-    nslog(string("gmmmmmm"))
+   ' nslog(string("gmmmmmm"))
     ' see if we can find where a block is using the camera
     Camera.TrackColor
     temp_con := Camera.GetConfidence
@@ -331,12 +344,15 @@ PRI do_drop_block | back_count
   nslog(string("dropping block and backing up"))
   ' drop the block, back up a bit, and then close the grippers
   open_grippers
+  pauseMS(2000)
   back_count := 15
   repeat until (back_count == 0)
     back_count := back_count - 1
+    pauseMS(300)
     set_wheel_speeds(-8, -8)
   
   set_wheel_speeds(0, 0)
+  have_reversed := YES
   close_grippers
 
 
@@ -438,3 +454,11 @@ PUB set_wheel_speeds(left_s, right_s)
 
 PRI nslog(str)
   RBC.DebugStrCr(str)
+
+PUB pauseMS(ms) | t
+ {{ i borrowed this function from
+http://www.parallax.com/Portals/0/Downloads/docs/cols/nv/prop/col/nvp7.pdf
+}}
+ t := CNT
+ REPEAT ms
+   WAITCNT(t += MS_001)
