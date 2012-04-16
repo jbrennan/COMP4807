@@ -18,7 +18,7 @@ The gist of the task we had to accomplish was to exchange blocks from Station 1 
 
 As both team members were supposed to drop off 4 blocks each, I would have to deliver 8 in total: 4 from the top to the bottom, and 4 from the bottom to the top. All the while avoiding collisions with the environment.
 
-![all_stations.png]("Details")
+![https://github.com/jbrennan/COMP4807/raw/master/all_stations.png]("Details")
 
 My Approach
 -----------
@@ -38,7 +38,7 @@ We decided to take the simplest possible approach, at the expense of completing 
 3. After Station 2 had finished its task and the other 2 robots had been notified, those robots would begin collecting the dropped off blocks and returning them to their stations. While this was happening, my robot was to remain idle. He was done his job.
 
 
-![round_2.png]("Details")
+![https://github.com/jbrennan/COMP4807/raw/master/round_2.png]("Details")
 
 Implementation Details
 ----------------------
