@@ -1,0 +1,2471 @@
+
+
+
+<!DOCTYPE html>
+<html>
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# githubog: http://ogp.me/ns/fb/githubog#">
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>COMP4807/report.md at master · jbrennan/COMP4807</title>
+    <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="GitHub" />
+    <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+
+    
+    
+
+    <meta content="authenticity_token" name="csrf-param" />
+<meta content="QcqKpsfN+anU6bI9yYTs4Jyy2jGpmm1IeN3sZRVHslw=" name="csrf-token" />
+
+    <link href="https://a248.e.akamai.net/assets.github.com/stylesheets/bundles/github-28c5222e349e8368a32d88dcc4734c5f5b7787eb.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="https://a248.e.akamai.net/assets.github.com/stylesheets/bundles/github2-30d147fc8dd43beb5d7ea3321dd28b6aedc0969b.css" media="screen" rel="stylesheet" type="text/css" />
+    
+
+    <script src="https://a248.e.akamai.net/assets.github.com/javascripts/bundles/jquery-78fea2420d2e2924cb02acf5821d5cba5bc639d1.js" type="text/javascript"></script>
+    <script src="https://a248.e.akamai.net/assets.github.com/javascripts/bundles/github-c0cb0b08a47dd52fd5538b06b656ac248f3eff0d.js" type="text/javascript"></script>
+    
+
+      <link rel='permalink' href='/jbrennan/COMP4807/blob/513a16ba2cd728469e067b32b0b53f6bda2fb3c3/report.md'>
+    <meta property="og:title" content="COMP4807"/>
+    <meta property="og:type" content="githubog:gitrepository"/>
+    <meta property="og:url" content="https://github.com/jbrennan/COMP4807"/>
+    <meta property="og:image" content="https://a248.e.akamai.net/assets.github.com/images/gravatars/gravatar-140.png?1329275856"/>
+    <meta property="og:site_name" content="GitHub"/>
+    <meta property="og:description" content="COMP4807 - The final project"/>
+
+    <meta name="description" content="COMP4807 - The final project" />
+  <link href="https://github.com/jbrennan/COMP4807/commits/master.atom" rel="alternate" title="Recent Commits to COMP4807:master" type="application/atom+xml" />
+
+  </head>
+
+
+  <body class="logged_in page-blob  vis-public env-production " data-blob-contribs-enabled="yes">
+    <div id="wrapper">
+
+    
+    
+    
+
+      <div id="header" class="true clearfix">
+        <div class="container clearfix">
+          <a class="site-logo" href="https://github.com/">
+            <!--[if IE]>
+            <img alt="GitHub" class="github-logo" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7.png?1323882717" />
+            <img alt="GitHub" class="github-logo-hover" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7-hover.png?1324325359" />
+            <![endif]-->
+            <img alt="GitHub" class="github-logo-4x" height="30" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7@4x.png?1323882717" />
+            <img alt="GitHub" class="github-logo-4x-hover" height="30" src="https://a248.e.akamai.net/assets.github.com/images/modules/header/logov7@4x-hover.png?1324325359" />
+          </a>
+
+              
+    <div class="topsearch ">
+<form accept-charset="UTF-8" action="/search" id="top_search_form" method="get"><input name="utf8" type="hidden" value="&#x2713;" />        <a href="/search" class="advanced-search tooltipped downwards" title="Advanced Search"><span class="mini-icon advanced-search"></span></a>
+        <div class="search placeholder-field js-placeholder-field">
+          <label class="placeholder" for="global-search-field">Search…</label>
+          <input type="text" class="search my_repos_autocompleter" id="global-search-field" name="q" results="5" spellcheck="false" autocomplete="off" data-autocomplete="my-repos-autocomplete">
+          <div id="my-repos-autocomplete" class="autocomplete-results">
+            <ul class="js-navigation-container"></ul>
+          </div>
+          <input type="submit" value="Search" class="button">
+          <span class="mini-icon search-input"></span>
+        </div>
+        <input type="hidden" name="type" value="Everything" />
+        <input type="hidden" name="repo" value="" />
+        <input type="hidden" name="langOverride" value="" />
+        <input type="hidden" name="start_value" value="1" />
+</form>      <ul class="top-nav">
+          <li class="explore"><a href="https://github.com/explore">Explore</a></li>
+          <li><a href="https://gist.github.com">Gist</a></li>
+          <li><a href="/blog">Blog</a></li>
+        <li><a href="http://help.github.com">Help</a></li>
+      </ul>
+    </div>
+
+
+            
+
+
+  <div id="userbox">
+    <div id="user">
+      <a href="https://github.com/jbrennan"><img height="20" src="https://secure.gravatar.com/avatar/225fe93f0f7ccd42c4cc559fb0919046?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="20" /></a>
+      <a href="https://github.com/jbrennan" class="name">jbrennan</a>
+    </div>
+    <ul id="user-links">
+      <li>
+        <a href="/inbox/notifications" id="notifications" class="tooltipped downwards" title="Notifications">
+          <span class="mini-icon notifications"></span>
+          <span class="unread_count">88</span>
+        </a>
+      </li>
+      <li><a href="/settings/profile" id="settings" class="tooltipped downwards" title="Account Settings"><span class="mini-icon account-settings"></span></a></li>
+      <li>
+          <a href="/logout" data-method="post" id="logout" class="tooltipped downwards" title="Log Out"><span class="mini-icon logout"></span></a>
+      </li>
+    </ul>
+  </div>
+
+
+
+          
+        </div>
+      </div>
+
+      
+
+            <div class="site hfeed" itemscope itemtype="http://schema.org/WebPage">
+      <div class="container hentry">
+        <div class="pagehead repohead instapaper_ignore readability-menu">
+        <div class="title-actions-bar">
+          
+
+
+
+              <ul class="pagehead-actions">
+
+          <li class="for-owner"><a href="/jbrennan/COMP4807/admin" class="minibutton btn-admin "><span><span class="icon"></span>Admin</span></a></li>
+
+          <li class="js-toggler-container watch-button-container on">
+            <a href="/jbrennan/COMP4807/toggle_watch" class="minibutton btn-watch watch-button js-toggler-target" data-method="post" data-remote="true" rel="nofollow"><span><span class="icon"></span>Watch</span></a>
+            <a href="/jbrennan/COMP4807/toggle_watch" class="minibutton btn-watch unwatch-button js-toggler-target" data-method="post" data-remote="true" rel="nofollow"><span><span class="icon"></span>Unwatch</span></a>
+          </li>
+
+              <li><a href="/jbrennan/COMP4807/fork_select" class="minibutton btn-fork " rel="facebox nofollow"><span><span class="icon"></span>Fork</span></a></li>
+
+              <li class="nspr">
+                <a href="/jbrennan/COMP4807/pull/new/master" class="minibutton btn-pull-request "><span><span class="icon"></span>Pull Request</span></a>
+              </li>
+
+
+      <li class="repostats">
+        <ul class="repo-stats">
+          <li class="watchers watching">
+            <a href="/jbrennan/COMP4807/watchers" title="Watchers — You're Watching" class="tooltipped downwards">
+              1
+            </a>
+          </li>
+          <li class="forks">
+            <a href="/jbrennan/COMP4807/network" title="Forks - You have a fork" class="tooltipped downwards">
+              1
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+          <h1 itemscope itemtype="http://data-vocabulary.org/Breadcrumb" class="entry-title">
+            <span class="mini-icon public-repo"></span>
+            <span class="author vcard">
+<a href="/jbrennan" class="url fn" itemprop="url" rel="author">              <span itemprop="title">jbrennan</span>
+              </a></span> /
+            <strong><a href="/jbrennan/COMP4807" class="js-current-repository">COMP4807</a></strong>
+          </h1>
+        </div>
+
+          
+
+  <ul class="tabs">
+    <li><a href="/jbrennan/COMP4807" class="selected" highlight="repo_sourcerepo_downloadsrepo_commitsrepo_tagsrepo_branches">Code</a></li>
+    <li><a href="/jbrennan/COMP4807/network" highlight="repo_network">Network</a>
+    <li><a href="/jbrennan/COMP4807/pulls" highlight="repo_pulls">Pull Requests <span class='counter'>0</span></a></li>
+
+      <li><a href="/jbrennan/COMP4807/issues" highlight="repo_issues">Issues <span class='counter'>0</span></a></li>
+
+      <li><a href="/jbrennan/COMP4807/wiki" highlight="repo_wiki">Wiki <span class='counter'>0</span></a></li>
+
+    <li><a href="/jbrennan/COMP4807/graphs" highlight="repo_graphsrepo_contributors">Stats &amp; Graphs</a></li>
+
+  </ul>
+
+  
+<div class="frame frame-center tree-finder" style="display:none"
+      data-tree-list-url="/jbrennan/COMP4807/tree-list/513a16ba2cd728469e067b32b0b53f6bda2fb3c3"
+      data-blob-url-prefix="/jbrennan/COMP4807/blob/513a16ba2cd728469e067b32b0b53f6bda2fb3c3"
+    >
+
+  <div class="breadcrumb">
+    <span class="bold"><a href="/jbrennan/COMP4807">COMP4807</a></span> /
+    <input class="tree-finder-input js-navigation-enable" type="text" name="query" autocomplete="off" spellcheck="false">
+  </div>
+
+    <div class="octotip">
+      <p>
+        <a href="/jbrennan/COMP4807/dismiss-tree-finder-help" class="dismiss js-dismiss-tree-list-help" title="Hide this notice forever" rel="nofollow">Dismiss</a>
+        <span class="bold">Octotip:</span> You've activated the <em>file finder</em>
+        by pressing <span class="kbd">t</span> Start typing to filter the
+        file list. Use <span class="kbd badmono">↑</span> and
+        <span class="kbd badmono">↓</span> to navigate,
+        <span class="kbd">enter</span> to view files.
+      </p>
+    </div>
+
+  <table class="tree-browser" cellpadding="0" cellspacing="0">
+    <tr class="js-header"><th>&nbsp;</th><th>name</th></tr>
+    <tr class="js-no-results no-results" style="display: none">
+      <th colspan="2">No matching files</th>
+    </tr>
+    <tbody class="js-results-list js-navigation-container">
+    </tbody>
+  </table>
+</div>
+
+<div id="jump-to-line" style="display:none">
+  <h2>Jump to Line</h2>
+  <form accept-charset="UTF-8">
+    <input name="utf8" type="hidden" value="&#x2713;" />
+    <input class="textfield" type="text">
+    <div class="full-button">
+      <button type="submit" class="classy">
+        <span>Go</span>
+      </button>
+    </div>
+  </form>
+</div>
+
+
+<div class="subnav-bar">
+
+  <ul class="actions subnav">
+    <li><a href="/jbrennan/COMP4807/tags" class="blank" highlight="repo_tags">Tags <span class="counter">0</span></a></li>
+    <li><a href="/jbrennan/COMP4807/downloads" class="blank downloads-blank" highlight="repo_downloads">Downloads <span class="counter">0</span></a></li>
+    
+  </ul>
+
+  <ul class="scope">
+    <li class="switcher">
+
+      <div class="context-menu-container js-menu-container">
+        <a href="#"
+           class="minibutton bigger switcher js-menu-target js-commitish-button btn-branch repo-tree"
+           data-master-branch="master"
+           data-ref="master">
+          <span><span class="icon"></span><i>branch:</i> master</span>
+        </a>
+
+        <div class="context-pane commitish-context js-menu-content">
+          <a href="javascript:;" class="close js-menu-close"></a>
+          <div class="context-title">Switch Branches/Tags</div>
+          <div class="context-body pane-selector commitish-selector js-filterable-commitishes">
+            <div class="filterbar">
+              <div class="placeholder-field js-placeholder-field">
+                <label class="placeholder" for="context-commitish-filter-field" data-placeholder-mode="sticky">Filter branches/tags</label>
+                <input type="text" id="context-commitish-filter-field" class="commitish-filter" />
+              </div>
+
+              <ul class="tabs">
+                <li><a href="#" data-filter="branches" class="selected">Branches</a></li>
+                <li><a href="#" data-filter="tags">Tags</a></li>
+              </ul>
+            </div>
+
+              <div class="commitish-item branch-commitish selector-item">
+                <h4>
+                    <a href="/jbrennan/COMP4807/blob/master/report.md" data-name="master" rel="nofollow">master</a>
+                </h4>
+              </div>
+
+
+            <div class="no-results" style="display:none">Nothing to show</div>
+          </div>
+        </div><!-- /.commitish-context-context -->
+      </div>
+
+    </li>
+  </ul>
+
+  <ul class="subnav with-scope">
+
+    <li><a href="/jbrennan/COMP4807" class="selected" highlight="repo_source">Files</a></li>
+    <li><a href="/jbrennan/COMP4807/commits/master" highlight="repo_commits">Commits</a></li>
+    <li><a href="/jbrennan/COMP4807/branches" class="" highlight="repo_branches" rel="nofollow">Branches <span class="counter">1</span></a></li>
+  </ul>
+
+</div>
+
+  
+  
+  
+
+
+          
+
+        </div><!-- /.repohead -->
+
+        
+
+
+
+
+
+<!-- block_view_fragment_key: views7/v8/blob:v21:88d1b9d12967757299e84ade8fee1e18 -->
+  <div id="slider">
+
+    <div class="breadcrumb" data-path="report.md/">
+      <b itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="/jbrennan/COMP4807/tree/513a16ba2cd728469e067b32b0b53f6bda2fb3c3" class="js-rewrite-sha" itemprop="url"><span itemprop="title">COMP4807</span></a></b> / <strong class="final-path">report.md</strong> <span class="js-clippy mini-icon clippy " data-clipboard-text="report.md" data-copied-hint="copied!" data-copy-hint="copy to clipboard"></span>
+    </div>
+
+
+      <div class="commit file-history-tease" data-path="report.md/">
+        <img class="main-avatar" height="24" src="https://secure.gravatar.com/avatar/225fe93f0f7ccd42c4cc559fb0919046?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="24" />
+        <span class="author"><a href="/jbrennan">jbrennan</a></span>
+        <time class="js-relative-date" datetime="2012-04-15T17:28:00-07:00" title="2012-04-15 17:28:00">April 15, 2012</time>
+        <div class="commit-title">
+            <a href="/jbrennan/COMP4807/commit/513a16ba2cd728469e067b32b0b53f6bda2fb3c3" class="message">oh</a>
+        </div>
+
+        <div class="participation">
+          <p class="quickstat"><a href="#blob_contributors_box" rel="facebox"><strong>1</strong> contributor</a></p>
+          
+        </div>
+        <div id="blob_contributors_box" style="display:none">
+          <h2>Users on GitHub who have contributed to this file</h2>
+          <ul class="facebox-user-list">
+            <li>
+              <img height="24" src="https://secure.gravatar.com/avatar/225fe93f0f7ccd42c4cc559fb0919046?s=140&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="24" />
+              <a href="/jbrennan">jbrennan</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    <div class="frames">
+      <div class="frame frame-center" data-path="report.md/" data-permalink-url="/jbrennan/COMP4807/blob/513a16ba2cd728469e067b32b0b53f6bda2fb3c3/report.md" data-title="COMP4807/report.md at master · jbrennan/COMP4807 · GitHub" data-type="blob">
+
+        <div id="files" class="bubble">
+          <div class="file">
+            <div class="meta">
+              <div class="info">
+                <span class="icon"><b class="mini-icon text-file"></b></span>
+                <span class="mode" title="File Mode">100644</span>
+                  <span>1662 lines (1157 sloc)</span>
+                <span>60.419 kb</span>
+              </div>
+              <ul class="button-group actions">
+                  <li>
+                    <a class="grouped-button file-edit-link minibutton bigger lighter js-rewrite-sha" href="/jbrennan/COMP4807/edit/513a16ba2cd728469e067b32b0b53f6bda2fb3c3/report.md" data-method="post" rel="nofollow"><span>Edit this file</span></a>
+                  </li>
+
+                <li>
+                  <a href="/jbrennan/COMP4807/raw/master/report.md" class="minibutton btn-raw grouped-button bigger lighter" id="raw-url"><span><span class="icon"></span>Raw</span></a>
+                </li>
+                  <li>
+                    <a href="/jbrennan/COMP4807/blame/master/report.md" class="minibutton btn-blame grouped-button bigger lighter"><span><span class="icon"></span>Blame</span></a>
+                  </li>
+                <li>
+                  <a href="/jbrennan/COMP4807/commits/master/report.md" class="minibutton btn-history grouped-button bigger lighter" rel="nofollow"><span><span class="icon"></span>History</span></a>
+                </li>
+              </ul>
+            </div>
+            
+  <div id="readme" class="blob instapaper_body">
+    <article class="markdown-body entry-content" itemprop="mainContentOfPage"><h2>The Team</h2>
+
+<p>We were team "Get the job done", featuring Darryl Hill on Station 1, Me on Station 2, and Frank Perks on Station 3. We each played the following roles:</p>
+
+<ol>
+<li><p>Darryl was in charge of finding blocks nestled amongst the upside down flower pots. This involved goal navigation guided by the Tracker, wall following and collision avoidance around the flower pots, and block sensing by the robot to find blocks.</p></li>
+<li><p>My job in the middle station was to move blocks delivered by Darryl to be dropped off to the bottom where they could be picked up by Frank, and to also move blocks delivered by Frank and drop them off where Darryl could pick them up. This involved mostly goal following from the Tracker, along with some block sensing, and lots of dynamic course correction.</p></li>
+<li><p>Frank's task was similar to Darryl. He had to find blocks laid out in his section which also was bifurcated by a wall with a small gap. Frank had to use wall following and collision avoidance to avoid smacking into the wall.</p></li>
+</ol><h2>The Competition</h2>
+
+<p>The competition environment was set up as in the image below. There are pots to navigate in Station 1, a board and corners to avoid in Section 2, and there's a wall with a small gap to navigate in Station 3.</p>
+
+<p>The gist of the task we had to accomplish was to exchange blocks from Station 1 and Station 3. As I was in charge of the middle station, I was in charge of doing the exchange between the top and bottom stations. My robot was essentially the fulcrum of the operation. The completion of the task depended on my robot.</p>
+
+<p>As both team members were supposed to drop off 4 blocks each, I would have to deliver 8 in total: 4 from the top to the bottom, and 4 from the bottom to the top. All the while avoiding collisions with the environment.</p>
+
+<p><a href="https://github.com/jbrennan/COMP4807/raw/master/all_stations.png" target="_blank"><img src="https://github.com/jbrennan/COMP4807/raw/master/all_stations.png" alt="details" style="max-width:100%;"></a></p>
+
+<h2>My Approach</h2>
+
+<p>The approach our team aimed for was <em>extreme simplicity</em>. At first, we were trying to decide how best to accomplish the task. Some obvious issues with coordinating such a task (as described above) are problems with having a block for my robot to deliver (that is, if my robot wants to pick up a block from Station 1 and bring it to the bottom for Station 3, he has to know there IS a block to be picked up!), and making sure the robots wouldn't collide if there was such a block available. How would we know when Frank's robot had come to drop off a block and how would I avoid colliding with his robot before he'd safely exited my station's area?</p>
+
+<p>We decided to take the simplest possible approach, at the expense of completing the task in the allotted time. The approach was simple: Do everything in a lockstep way. There are three main stages to this appraoch:</p>
+
+<ol>
+<li><p>Robots 1 and 3 hunt for their blocks and deliver them one by one to the designated areas in Station 2, informing my Tracker the exact drop off location of each block (and from which station the message came). While this is happening <em>my robot was to be completely idle</em>, safely out of the way of either of the other robots.</p></li>
+<li>
+<p>After each of Robots 1 and 3 had delivered 4 of their blocks, they were to return to their stations, and become idle. Then and only then, my robot in station 2 would begin its task. It would first <strong>Goal Navigate</strong> using the Tracker to the most recently dropped off block from Station 1 (we had the blocks dropped off farthest first, so that I'd pick them up in reverse order, so I wouldn't knock down any other blocks in the way). When my robot was close enough to the Goal (given a small distance threshhold so it didn't have to be exact), it would orient itself so it was angled properly at the Goal.</p>
+
+<p>It would then go into <code>Block Sensing Mode</code> and try to pick up a block. After it found the block, it would then Goal Navigate again, this time to a designated drop off location for Station 3 to pick up later. The robot would also message Station 3 with the exact location of this drop off. Then the robot would start <strong>Goal Navigating</strong> again, to get the most recently dropped off block from Station 3 (just like how it started by navigating for Station 1 blocks earlier). When it reached its goal location, it would again orient itself, enter block seeking mode, and capture a block. With its block captured, it was to <strong>Goal Navigate</strong> again to the Station 1 drop off area, drop off the block, and inform Station 1 of its location.</p>
+
+<p>After completing one such cycle, it was to check to see how many more blocks were remaining. If there were no more blocks remaining, it was to Goal Navigate out of the way again, and inform the other Stations. This was a completion of its task. If it <em>had not</em> completed its task, it was to make another cycle and keep checking, etc.</p>
+</li>
+<li><p>After Station 2 had finished its task and the other 2 robots had been notified, those robots would begin collecting the dropped off blocks and returning them to their stations. While this was happening, my robot was to remain idle. He was done his job.</p></li>
+</ol><p><a href="https://github.com/jbrennan/COMP4807/raw/master/round_2.png" target="_blank"><img src="https://github.com/jbrennan/COMP4807/raw/master/round_2.png" alt="details" style="max-width:100%;"></a></p>
+
+<h2>Implementation Details</h2>
+
+<p>For the implementation of my Station's task, there were three main parts: The <code>MiddlePlanner.java</code> code, which handled most of the robot's logic; the <code>Navigate.spin</code> code which handled following Tracker instructions on the robot itself; and finally a messaging protocol established with the rest of the team for knowing when certain robot events have occurred and where (e.g., "Robot 1 dropped off a block at x,y"). Each of these will now be explained in detail.</p>
+
+<h3>MiddlePlanner</h3>
+
+<p>The tracker is where the majority of the work was done for my Robot's task. The gist of it is I used the planner to do <strong>all</strong> robot related logic, and then I would send these logic commands to the Robot itself, who would then perform the tasks and report back.</p>
+
+<p>The Planner code was implemented as a finite state machine, with the following possible states:</p>
+
+<pre><code>public enum RobotState {
+    RobotStateInvalid, // Used as default value before a state is set
+    RobotStateStart, // The entrance state..robot waits to begin
+    RobotStateSeekTop, // Goal navigate to Top pickup location and orient to it
+    RobotStatePickTop, // Robot should be looking for a block and snatch it if found
+    RobotStateDropBottom, // Robot navigates to the Bottom drop off target
+    RobotStateDoActualDropBottom, // Robot performs the block drop and backs up slowly
+    RobotStateSeekBottom, // Robot Navigates to the bottom Pickup Zone and orients
+    RobotStatePickBottom, // Robot locates a block and picks it up
+    RobotStateDropTop, // Robot navigates to the Top dropoff goal
+    RobotStateDoActualDropTop, // Robot drops off the block at the top and backs up
+    RobotStateFinishedCycle, // Evaluate if we're done. If not, do another cycle
+    RobotStatePark, // If done, move out of the way and stop
+    RobotStateEnd // Finally parked, shutdown and tell other stations
+}
+</code></pre>
+
+<p>The robot stays in <code>RobotStateStart</code>, which is idle, until both Stations 1 and 3 have told me they have dropped off 4 blocks each and their locations.</p>
+
+<p>The basic runloop of the Planner code is recording the Robot's latest pose in <code>receivedPoseFromTracker(Pose p)</code>. It adds the pose to a list of poses maintained by the class. The main logic then occurs in the <code>receivedDataFromRobot(int[] data)</code> method. Here's the way it works:</p>
+
+<ol>
+<li>On the Robot, it enters a runloop forever, and it clears out some flags, then it sends some data to the planner, either reporting what it's just done OR asking the Planner for its next task.</li>
+<li>The <code>receivedDataFromRobot(int[] data)</code> gets called on the Planner, which is essentially one large <code>switch</code> statement, with a <code>case</code> for every possible robot state (this is how the transitions between the robot's finite state machine are handled).</li>
+<li>The Planner decides what the robot needs to do next. It looks at the most recent robot Pose and the current state, and determines what the robot should do, whether that's move, rotate, or enter a new mode (like block seeking or block dropping, for example). When the Planner has decided what to do, it responds by sending the robot a set of bytes back and it returns from this method.</li>
+<li>The robot just sits and waits for a response from the Planner after it asks. Then it reads what the Planner has told it to do and it performs the task. More detail will be given below in the robot's code section.</li>
+</ol><p>This means the Robot does very little logic on its own. The Planner code is what determines what needs to be done. The robot is essentially a dumb terminal performing these tasks. In order to avoid things like wall collisions, the Planner code sends very small instructions to the robot very rapidly, so the robot never has to come near a wall. The move or rotate instructions are for small amounts of movement, with the idea the robot will request many of these as it's moving. This allows for really quick and precise course corrections while Goal navigating, for example.</p>
+
+<p>When the robot was in a state where it needed to <em>Goal Navigate</em>, it called a single method to perform the navigation. Having all goal navigating states refer to a single Navigation method meant my code could be changed in one place and every place it was needed automatically got the new functionality. This made debugging much simpler. It also gave me consistent behavior.</p>
+
+<p>The method also allowed me to transition to the next state when the navigation had completed and oriented properly. When doing this, it would send a message to the robot to just "ASK_AGAIN", meaning the robot would do nothing, loop, and just make another request to the Planner. When this new request came in, the Planner's finite state machine had already transitioned to the next state. I found this was an elegant way to transition states and keep the robot and planner in sync. The method looked like the following:</p>
+
+<pre><code>void goalNavigateAlongCurrentPathForRobotPoint(Pose pose, RobotState nextState, boolean forceNextState) {
+    // This is Goal-navigation.
+
+    // First see if he's close enough to the goal, in which case
+    // transition to the next State.
+    Point robotPoint = new Point(pose.x, pose.y);
+    Goal currentGoal = goals.get(0); // Only dealing with 1 goal. If paths had more goals, change this
+
+    if (currentGoal.isPointCloseEnoughToGoal(robotPoint)) {
+
+        // Make sure we're properly oriented to the goal so we can just move forward when seeking a block. Then transition in this method.
+        if (forceNextState) {
+            // No need to orient
+            // Change state and reset some internal flags.
+            setRobotState(nextState);
+
+            // Just so we have some instructions to reply with
+            sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
+        } else {
+            // Not done navigating.. still need to orient to the goal.
+            orientToGoalForPose(pose, currentGoal, nextState);
+        }
+
+    } else {
+        // We need to tell the robot to (keep) moving towards the Drop Goal.
+        int robotCurrentAngle = pose.angle; // degrees
+        int angleToTheGoal = (int)getAngle(currentGoal.location, robotPoint);
+        int distanceToGoal = distance(currentGoal.location.x - robotPoint.x,
+                                        currentGoal.location.y -robotPoint.y);
+        System.out.println("Distance to goal is: " + distanceToGoal);
+
+        int RANGE = 5;
+        byte rotation = ROTATE_NONE;
+        byte movement = MOVE_NONE;
+
+        int angleDifference = angleToTheGoal - robotCurrentAngle;
+
+        if (Math.abs(angleDifference) &lt; RANGE) {
+            rotation = ROTATE_NONE;
+            movement = MOVE_SMALL;
+        } else if (angleDifference &gt; 0) {
+            rotation = angleDifference &lt; 180? ROTATE_BACK_SMALL : ROTATE_SMALL;
+            movement = MOVE_NONE;
+        } else {
+            rotation = ROTATE_SMALL;
+            movement = MOVE_NONE;
+        }
+
+        // Now send this command to the robot
+        sendInstructionsToRobot(movement, rotation, GO);
+
+    }
+}
+</code></pre>
+
+<p>Orienting towards the goal worked in a similar way, as can be seen in the Planner file.</p>
+
+<p>When transitioning to a state where the robot would need to goal follow, I also invoked the <code>computePathFromRobotPoseToEndGoal(Pose currentRobotPose, RobotState state)</code> method so that a new path could be computed. This path would guide the robot from its current location to its destination (e.g., picking up a block to where it needs to be dropped off). In this method, I used a really simple way for making a "path" which really only had a destination (like taking the next pickup location, for example). I could have made this more sophisticated for better dodging obstacles (like creating a safer path), but I went for utmost simplicity in the name of just getting things done.</p>
+
+<h3>Navigate.spin</h3>
+
+<p>This was the code which ran on the Robot, which was basically responsible for listening for commands from the Planner code and executing them. It had a main runloop where it would perform its most recent task if any (e.g., Rotate, move, seek a block, drop a block, etc.), and then it would report back to the Planner, either saying which task it had just completed, or it would ask for a new task. It would immediately stop and wait for a response from the Planner before doing anything else.</p>
+
+<p>After the planner did its logic as described above, the Robot would read the response and perform any task needed, and the loop would happen over again.</p>
+
+<p>This continued until the robot received the Complete message, in which case it would beeb a shutdown sound and exit the runloop.</p>
+
+<p>The movement commands are fairly straightforward, just entering a loop and either moving or spinning as required.</p>
+
+<p>The Block seeking code is a little more involved. It first opens the robot's grippers and tilts the head down, and then it must use the camera to try and find a block. In a loop, it searches until it finds a block. If given more time, it would have been a good idea to integrate a timeout to this code, so if the robot didn't find a block after so long, it would just return a failure condition. Instead, my robot will look until the end of time (or its battery dies, whichever comes first!). This is less than ideal. On every iteration of the searching loop, the robot uses its block sensor to see if it's got a block. In this case, it breaks from the loop, closes its grippers, sets an internal flag for reporting back to the Planner, and returns.</p>
+
+<p>If it doesn't detect a block, it uses the camera to see if it can find a block. Because the robot has already been oriented towards the block (hopefully) at this point, then it should quickly find the block. It uses the camera data to see if it needs to move to the right or the left, or just move forward to find the block. And then it loops again.</p>
+
+<h3>Message format between stations</h3>
+
+<p>The message format we agreed on to talk between stations was pretty simple and can be seen in the <code>StationMessage.java</code> and <code>MessageType.java</code> classes included below.</p>
+
+<p>Essentially, we've used specially formatted strings which can be read and created, sent among the stations, indicating what kind of message was sent (like "Station 2 dropped off a block to the bottom at (x, y)").</p>
+
+<p>There was a significant problem with this, however. <strong>The Tracker was unreliable at delivering messages between stations 1 and 2</strong>. This means I could not always get the corret messages from Darryl's station. It's incredibly frustrating because there's no way around that. I realize in this course there are "errors" with the robot, and the Tracker finding the robot. That's understandable because there exists noise, and the solution is to either smooth data or work around by asking again, etc. But these errors, as far as I can tell, are just bugs in the Tracker which I can neither fix (we're not allowed to modify the Tracker) or work around (how am I to reliably get messages from another tracker when the only software interface to accomplish this task is broken? My robot has absolutely <strong>no way</strong> to work around this problem and this should not be penialized).</p>
+
+<p>The code is all below in the "Software" section.</p>
+
+<h2>Problems Encountered</h2>
+
+<p>The biggest problem we encountered was a lack of time and coordination. Not only were we limited for lab time, but of course, as students we each had our share of other assignments which ate away at our time in the lab, too.</p>
+
+<p>We also lacked time when actually running the competition itself. Using our super simple lockstep method, of course we didn't have enough time to complete the whole task in the 15 minutes allotted. My robot didn't even get a chance to perform his task before the time ran out.</p>
+
+<p>My plan was to get our task completed and then optimize it where we could so we'd get more done in the 15 minutes, while keeping things as simple as possible. It was hard enough just getting the SIMPLE version of our robots working, let alone trying to do anything complicated like interacting all three robots at the same time. I've learned from my other programming courses that Simple is the best, so we wanted something as elegant as possible. In the end, it didn't prove fast enough. Given more time for us to prepare, I'm convinced we could have tweaked our solution enough to finish within the 15 minutes we had to do our task.</p>
+
+<p>As for my Robot, I had several problems, though thankfully most of them were minor. The biggest problem was again timing. I did my best to take my time and <em>think</em> out all my code as best I could before writing it. I drew out my finite state machine on paper so I could visualize exactly what the robot had to do. I took my time and care writing the Planner code to follow this.</p>
+
+<p>Originally, I had all my logic in the <code>receivedPoseFromTracker()</code> method, but I found when sending responses to the robot, the RBC would crap out on me and I'd lose messages, so my robot would miss my commands and end up spinning or moving forever and that was very frustrating.</p>
+
+<p>Instead, I re-wrote my code to only send a command to the robot exactly when he had explicitly asked for a new command, by doing this in the <code>receivedDataFromRobot()</code> method. This simplified things even more, and made sure the robot never missed a command. But this a long time to re-write properly.</p>
+
+<p>As for other hardware problems, the biggest problem was getting the robot to properly detect blocks. In the end, I don't feel like I had an entirely satisfactory solution, but it worked well enough. The best I could do was to aim/orient my robot to be exactly in line with the Goal location for the block (this goal was to be given to me by another Tracker Station). This helped by giving the robot better odds at being directly aligned with the block, and thus much more likely to detect it. Before adding the orientation code, my robot would very much likely not find the block at all.</p>
+
+<p>The Tracker was also a source of much agony throughout the project, having to constantly manually reload the Planner code (suggestion: update the Tracker so that it remembers the last file loaded, and have it poll to see if the modification date on that file changes -- reloading it automatically if so. That probably would have given me an extra hour or two onto my life which has otherwise been wasted constantly reloading the same class over and over again!). It also had difficulty trying to locate the robot when updating poses. This meant at times my robot would sit idle for many seconds, as the Tracker waited for a new pose to arrive to better command the robot with. If the robot was in a darker area of the map, this would severly slow it down.</p>
+
+<h2>If I Could Turn Back Time</h2>
+
+<p>I'm confident in my code and the solutions I've found to most of these problems. They're all on the right track. All I could do better would be to have many, many more hours given to me for lab time, and having no other course work to eat up the rest of my time. I believe I had good solutions, but they needed tweaking, and that needed more time.</p>
+
+<p>Also, because I was trying to coordinate with two other members, and because we each had our share of troubles, we never were able to fully test the complete running solution to the code. By the time I left on the last night of lab time, one of my team members was still writing code... he would not have a solution until nearly the end of the night! That wasn't possible to test against. It was a problem of coordination, as is to be expected in a project like this.</p>
+
+<p>We could have improved our team approach again by tweaking things. My robot could have moved faster and with better paths. We also could have introduced very simple <em>concurrency</em> among the robots to make more efficient use of our time, but again, we didn't want to do this until we had the simple base-case working first.</p>
+
+<h2>Robot Hardware Problems</h2>
+
+<p>Most of the hardware problems I encountered were already described above. The encoders were never once correct for me, but to overcome this I just had to tweak them every single time I came into the lab. Frustrating, but I dealt with it.</p>
+
+<p>The RBC was also flakey at best for me through the whole term. It's extremely easy to swamp it with data and have it essentially crash on you.</p>
+
+<p>In the end, I found it was easiest if I did the least amount of work possible on the Robot. Spin code is attrocious and nearly impossble to debug. I found things were simpler if I did my work on the Planner code and simply made the robot do its biddings.</p>
+
+<h2>Video of the Robot</h2>
+
+<p>The video of my robot doing its task can be found here: <a href="https://vimeo.com/40411292">https://vimeo.com/40411292</a> I ended up hard-coding values into the planner in order to record this video. You can see this happening in the constructor of my Planner code. I spin off a thread which waits for a few seconds. When the thread fires, it sends the Planner messages, simulating messages coming from the other Trackers about the positions of Blocks being dropped off.</p>
+
+<p>I do it this way to best simulate what would actually happen if interacting with the other robots. While the thread is paused, the robot is actually running, and he's in the StartState, so he waits until after he's got all the blocks announced and ready to be dealt with. Then he starts to move.</p>
+
+<p>While recording this video, after 2 complete cycles the robot dies (another random hardware problem???) but I ended the video there. There was another team coming in after me and I didn't have a chance to make another recording. As you'll see in the code, the robot would have continued to do 2 more cycles before completing his task, and they'd look identical to what's shown in the video.</p>
+
+<h2>Software</h2>
+
+<p>The software which is included below can also be found at: <a href="https://github.com/jbrennan/COMP4807">https://github.com/jbrennan/COMP4807</a></p>
+
+<h3>MiddlePlanner.java</h3>
+
+<pre><code>import java.util.*;
+import java.lang.Math;
+
+public class MiddlePlanner extends Planner {
+
+    // byte indices
+    final int ROTATION = 0;
+    final int MOVE = 1;
+    final int CONTROL = 2;
+
+    // Movement instructions
+    final byte MOVE_NONE = 0;
+    final byte MOVE_SMALL = 1;
+
+    // Rotation instructions
+    final byte ROTATE_NONE = 0;
+    final byte ROTATE_SMALL = 1;
+    final byte ROTATE_BACK_SMALL = 2;
+
+
+    // Command instructions
+    final byte STAY_STILL = 0;
+    final byte ASK_AGAIN = 1;
+    final byte GO = 2;
+    final byte SEEK_BLOCK = 3;
+    final byte DROP_BLOCK = 4;
+    final byte ALL_DONE = 100;
+
+
+    // From the robot
+    final int STATUS = 0;
+
+    // Status codes
+    final int STATUS_COMMAND_REQUEST = 0;
+    final int STATUS_BLOCK_FOUND = 1;
+
+
+    final int TOTAL_BLOCKS = 8;
+
+
+
+    public enum RobotState {
+        RobotStateInvalid,
+        RobotStateStart,
+        RobotStateSeekTop,
+        RobotStatePickTop,
+        RobotStateDropBottom,
+        RobotStateDoActualDropBottom, 
+        RobotStateSeekBottom,
+        RobotStatePickBottom,
+        RobotStateDropTop,
+        RobotStateDoActualDropTop,
+        RobotStateFinishedCycle,
+        RobotStatePark,
+        RobotStateEnd
+    }
+
+
+    boolean firstPose;
+
+    ArrayList&lt;Pose&gt; poses;
+    ArrayList&lt;Goal&gt; goals;
+
+
+    // The goal areas for where I pick up the cylanders from other bots
+    Goal topPickupZone = new Goal(new Point(0, 0));
+    Goal bottomPickupZone = new Goal(new Point(480, 240));
+
+    Goal topDropZone = new Goal(new Point(0, 240));
+    Goal bottomDropZone = new Goal(new Point(480, 0));
+
+
+    RobotState currentRobotState;
+
+    int _numberOfBottomBlocksReady;
+    int _numberOfTopBlocksReady;
+
+    int _numberOfDeliveredBlocks;
+
+
+    //Goal currentGoal;
+    //int currentGoalNumber;
+
+    ArrayList&lt;Goal&gt; topPickupGoals;
+    ArrayList&lt;Goal&gt; topDropoffGoals;
+    ArrayList&lt;Goal&gt; bottomPickupGoals;
+    ArrayList&lt;Goal&gt; bottomDropoffGoals;
+
+
+    // Flags
+    boolean _allDone;
+    boolean _haveSentRobotCommand;
+    boolean _latestCommandAcknowledged;
+    boolean _robotFoundBlock;
+
+    boolean _bottomZoneUnlocked, _topZoneUnlocked;
+
+    // Constructor for the planner
+    public MiddlePlanner() {
+
+        firstPose = true;
+        poses = new ArrayList&lt;Pose&gt;();
+        goals = new ArrayList&lt;Goal&gt;();
+
+        Pose[] poses = getUserDefinedPath();
+        for (Pose p : poses) {
+            goals.add(new Goal(new Point(p.x, p.y)));
+            System.out.println("Added a new goal at: " + p.x + ", " + p.y);
+        }
+
+        if (goals.size() &gt; 0) {
+            //currentGoal = goals.get(0);
+            //currentGoalNumber = 0;
+        } else {
+            //currentGoal = topPickupZone;
+            //currentGoalNumber = 0;
+        }
+
+        this.currentRobotState = RobotState.RobotStateInvalid;
+        setRobotState(RobotState.RobotStateStart);
+
+        topPickupGoals = new ArrayList&lt;Goal&gt;();
+        topDropoffGoals = new ArrayList&lt;Goal&gt;();
+        bottomPickupGoals = new ArrayList&lt;Goal&gt;();
+        bottomDropoffGoals = new ArrayList&lt;Goal&gt;();
+
+
+        // Fill out the drop goals.. these are the destinations for drop zones
+        // Offset these goals for where the robot should actually stop?
+        for (int i = 0; i &lt; 4; i++) {
+            int x = 550;
+            int y = 665 + (i * 40);
+            bottomDropoffGoals.add(new Goal(new Point(x, y)));
+        }
+
+
+        for (int i = 0; i &lt; 4; i++) {
+            int x = 60;
+            int y = 850 - (i * 40);
+            topDropoffGoals.add(new Goal(new Point(x, y)));
+        }
+
+
+
+        // Hack just to get the robot to switch modes on its own for testing
+        final MiddlePlanner that = this;
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                try {
+                    Thread.sleep(3000);
+                    System.out.println("Thread done sleeping. Going to trick the robot into starting!");
+
+                    String d;
+
+                    d = StationMessage.FormatToMessage(MessageType.STATION_1_RED_BLOCK_DROPPED_OFF, 60, 556);
+                    that.receivedDataFromStation(1, d);
+
+                    d = StationMessage.FormatToMessage(MessageType.STATION_1_RED_BLOCK_DROPPED_OFF, 60, 577);
+                    that.receivedDataFromStation(1, d);
+
+                    d = StationMessage.FormatToMessage(MessageType.STATION_1_RED_BLOCK_DROPPED_OFF, 60, 600);
+                    that.receivedDataFromStation(1, d);
+
+                    d = StationMessage.FormatToMessage(MessageType.STATION_1_RED_BLOCK_DROPPED_OFF, 60, 620);
+                    that.receivedDataFromStation(1, d);
+
+
+                    d = StationMessage.FormatToMessage(MessageType.STATION_3_BLUE_BLOCK_DROPPED_OFF, 568, 929);
+                    that.receivedDataFromStation(2, d);
+
+                    d = StationMessage.FormatToMessage(MessageType.STATION_3_BLUE_BLOCK_DROPPED_OFF, 568, 912);
+                    that.receivedDataFromStation(2, d);
+
+                    d = StationMessage.FormatToMessage(MessageType.STATION_3_BLUE_BLOCK_DROPPED_OFF, 568, 894);
+                    that.receivedDataFromStation(2, d);
+
+                    d = StationMessage.FormatToMessage(MessageType.STATION_3_BLUE_BLOCK_DROPPED_OFF, 568, 875);
+                    that.receivedDataFromStation(2, d);
+
+
+
+                    //_numberOfBottomBlocksReady = TOTAL_BLOCKS;
+                    _topZoneUnlocked = true;
+                    _bottomZoneUnlocked = true;
+                    //setRobotState(RobotState.RobotStatePickTop);
+
+
+                    // add some blocks
+                    //topPickupGoals.add(new Goal(new Point(60, 542)));
+
+                    //bottomPickupGoals.add(new Goal(new Point(560, 916)));
+
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    System.out.println("There was an error in the thread!!");
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        System.out.println("Thread started!!");
+    }
+
+
+
+    void setRobotState(RobotState newState) {
+        if (newState == currentRobotState)
+            return;
+        System.out.println("Transitioning from " + this.currentRobotState.toString() + " to " + newState.toString());
+        this.currentRobotState = newState;
+
+        // Reset some flags.
+        _haveSentRobotCommand = false;
+        _latestCommandAcknowledged = false;
+        _robotFoundBlock = false;
+
+    }
+
+
+    void sendInstructionsToRobot(byte movement, byte rotation, byte command) {
+        byte[] outData = new byte[6]; // the data buffer to send to the robot.
+
+        outData[ROTATION] = rotation;
+        outData[MOVE] = movement;
+        outData[CONTROL] = command;
+
+        sendDataToRobot(outData);
+    }
+
+
+    void orientToGoalForPose(Pose pose, Goal goal, RobotState nextState) {
+        int robotCurrentAngle = pose.angle; // degrees
+        Point robotPoint = new Point(pose.x, pose.y);
+        int angleToTheGoal = (int)getAngle(goal.location, robotPoint);
+
+
+        int RANGE = 10;
+        byte rotation = ROTATE_NONE;
+        byte movement = MOVE_NONE;
+
+        int angleDifference = angleToTheGoal - robotCurrentAngle;
+        System.out.println("Angle diff: " + angleDifference);
+        if (Math.abs(angleDifference) &lt; RANGE) {
+
+
+            // We're good!!
+            // Change state and reset some internal flags.
+            setRobotState(nextState);
+
+            // Just so we have some instructions to reply with
+            sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
+            return;
+
+        } else if (angleDifference &gt; 0) {
+
+            // Still need to rotate;
+
+            rotation = angleDifference &lt; 180? ROTATE_BACK_SMALL : ROTATE_SMALL;
+
+        } else {
+            rotation = angleDifference &lt; -180? ROTATE_BACK_SMALL : ROTATE_SMALL; // might need to do like above...
+        }
+
+        sendInstructionsToRobot(movement, rotation, GO);
+
+    }
+
+
+
+    void goalNavigateAlongCurrentPathForRobotPoint(Pose pose, RobotState nextState, boolean forceNextState) {
+        // This is basically Goal-navigation now.
+
+        // First see if he's close enough to the goal, in which case
+        // transition to the next State.
+        Point robotPoint = new Point(pose.x, pose.y);
+        Goal currentGoal = goals.get(0); // TODO: Change this if we're dealing with multiple goals!!!
+
+        if (currentGoal.isPointCloseEnoughToGoal(robotPoint)) {
+            // Really, we have to make sure we do this for the WHOLE PATH OF GOALS
+            // Not just 1 goal.
+            // We're close enough to change states
+            System.out.println(this.currentRobotState.toString() + ": Close enough to goal, going to orient.");
+
+
+            // Make sure we're properly oriented to the goal so we can just move forward when seeking a block. Then transition in this method.
+            if (forceNextState) {
+                // We're good!!
+                // Change state and reset some internal flags.
+                setRobotState(nextState);
+
+                // Just so we have some instructions to reply with
+                sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
+            } else {
+                orientToGoalForPose(pose, currentGoal, nextState);
+            }
+
+        } else {
+            // We need to tell the robot to (keep) moving towards the Drop Zone.
+            int robotCurrentAngle = pose.angle; // degrees
+            int angleToTheGoal = (int)getAngle(currentGoal.location, robotPoint);
+            int distanceToGoal = distance(currentGoal.location.x - robotPoint.x,
+                                            currentGoal.location.y -robotPoint.y);
+            System.out.println("Distance to goal is: " + distanceToGoal);
+
+            int RANGE = 5;
+            byte rotation = ROTATE_NONE;
+            byte movement = MOVE_NONE;
+
+            int angleDifference = angleToTheGoal - robotCurrentAngle;
+
+            if (Math.abs(angleDifference) &lt; RANGE) {
+                rotation = ROTATE_NONE;
+                movement = MOVE_SMALL;
+            } else if (angleDifference &gt; 0) {
+                rotation = angleDifference &lt; 180? ROTATE_BACK_SMALL : ROTATE_SMALL;
+                movement = MOVE_NONE;
+            } else {
+                System.out.println("Less than 0..." + angleDifference);
+                rotation = ROTATE_SMALL; // might need to do like above...
+                movement = MOVE_NONE;
+            }
+
+
+            // Now send this command to the robot
+            sendInstructionsToRobot(movement, rotation, GO);
+
+        }
+    }
+
+
+
+    boolean receivedCommandAck = true;
+    public void receivedPoseFromTracker(Pose p) {
+
+
+        // Just keep updating to the latest pose... I suppose we could just keep a reference to the latest one. Whatever.
+        if (p.x &lt; 0 || p.y &lt; 0) return; // skip invalid poses
+        poses.add(p);
+
+
+    }
+
+
+    void announceCompletionToOtherStations() {
+
+        String data1 = StationMessage.FormatToMessage(MessageType.ZONE_2_1_UNLOCKED);
+        sendDataToStation(1, data1);
+        sendDataToStation(3, data1);
+
+        data1 = StationMessage.FormatToMessage(MessageType.ZONE_2_2_UNLOCKED);
+        sendDataToStation(1, data1);
+        sendDataToStation(3, data1);
+
+
+        String data = StationMessage.FormatToMessage(MessageType.STATION_2_DONE);
+        sendDataToStation(1, data);
+        sendDataToStation(3, data);
+    }
+
+
+    void announceDropoffAtPointToStation(Point point, int stationID) {
+
+        MessageType messageType;
+        if (stationID == 1) {
+            messageType = MessageType.STATION_2_RED_BLOCK_DROPPED_OFF;
+        } else {
+
+            messageType = MessageType.STATION_2_BLUE_BLOCK_DROPPED_OFF;
+
+        }
+
+        sendDataToStation(stationID, StationMessage.FormatToMessage(messageType, point.x, point.y));
+    }
+
+
+    private int[] processedRobotData(int[] data) {
+        int length = data.length;
+        if (length % 2 != 0) length += 1; // make sure it's an even number
+
+        int[] processed = new int[length/2];
+        int currentProcessedIndex = 0;
+        for (int currentDataIndex = 0; currentDataIndex &lt; data.length; currentDataIndex += 2) {
+            processed[currentProcessedIndex++] = data[currentDataIndex]*256 + data[currentDataIndex+1];
+        }
+
+        return processed;
+    }
+
+
+    private void computePathFromRobotPoseToEndGoal(Pose currentRobotPose, RobotState state) {
+
+        // Based on the current state and the current location, compute a path the robot needs to take to reach
+        // the goal (the goal depends on the current state!).
+
+        goals = new ArrayList&lt;Goal&gt;();
+        switch (state) {
+            case RobotStateDropBottom: {
+
+
+
+                // Move in almost a straight line? Or just a straight line...
+                goals.add(bottomDropoffGoals.get(0));
+
+                // Must remember to remove this goal from the bottomDropoffGoals list... do it now?
+                bottomDropoffGoals.remove(0);
+
+                break;
+            }
+
+
+            case RobotStateSeekBottom: {
+
+
+                // Pickup the last item in this list
+                goals.add(bottomPickupGoals.get(bottomPickupGoals.size() - 1));
+
+                bottomPickupGoals.remove(bottomPickupGoals.size() - 1);
+
+                break;
+            }
+
+
+            case RobotStateDropTop: {
+
+                goals.add(topDropoffGoals.get(0));
+                topDropoffGoals.remove(0);
+
+                break;
+            }
+
+
+            case RobotStateSeekTop: {
+
+                goals.add(topPickupGoals.get(topPickupGoals.size() - 1));
+                System.out.println("top goal is: " + goals.get(0).toString());
+                topPickupGoals.remove(topPickupGoals.size() - 1);
+
+                break;
+            }
+
+
+            case RobotStatePark: {
+                goals.add(new Goal(new Point(160, 750)));
+
+                break;
+            }
+
+
+            default: {
+                System.out.println("Unhandled plan computation!!!!! " + state.toString());
+                System.exit(-1); // force a crash
+                break;
+            }
+
+
+
+        }
+
+        System.out.println("New goal path looks like:");
+        for (Goal g : goals) {
+            System.out.println(g.toString());
+        }
+    }
+
+
+    // Called when the planner receives data from the robot
+    public void receivedDataFromRobot(int[] data) {
+
+        Pose latestPose = poses.get(poses.size() - 1);
+        int[] commandData = processedRobotData(data); // basically just intifies the data from the robot.
+
+
+        switch (this.currentRobotState) {
+            case RobotStateStart: {
+                if ((_numberOfTopBlocksReady + _numberOfBottomBlocksReady) == TOTAL_BLOCKS &amp;&amp; _topZoneUnlocked &amp;&amp; _bottomZoneUnlocked) {
+                    // transition to the next state
+
+
+                    setRobotState(RobotState.RobotStateSeekTop);
+                    String data1 = StationMessage.FormatToMessage(MessageType.ZONE_2_1_LOCKED);
+                    sendDataToStation(1, data1);
+                    sendDataToStation(3, data1);
+                    data1 = StationMessage.FormatToMessage(MessageType.ZONE_2_2_LOCKED);
+                    sendDataToStation(1, data1);
+                    sendDataToStation(3, data1);
+                    computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStateSeekTop);
+                } else {
+                    // Stay in the same state... don't tell the robot?
+                    //this.currentRobotState = RobotStateStart;
+
+
+
+                    /* The robot will then stay still for a certain timeout and then ask again
+                        At which point we will try again to determine his current instruction
+                    */
+
+                }
+
+                // Always stay still. The robot will send a call when he's done
+                // At which point, if we've transitioned, then we'll tell him his new instructions
+                sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, STAY_STILL);
+                break;
+            }
+
+
+            case RobotStateSeekTop: {
+                // The robot needs to be moving towards the top pickup zone
+                // This is basically Goal-navigation now.
+
+                // First see if he's close enough to the goal, in which case
+                // transition to the next State.
+
+                goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStatePickTop, false);
+
+
+                // Point robotPoint = new Point(latestPose.x, latestPose.y);
+                // Goal currentGoal = goals.get(currentGoalNumber); // TODO: verify this
+                // 
+                // if (currentGoal.isPointCloseEnoughToGoal(robotPoint)) {
+                //  // We're close enough to change states
+                //  System.out.println("SeekTop: close enough to PickupZone");
+                //  
+                //  // Change state and reset some internal flags.
+                //  setRobotState(RobotState.RobotStatePickTop);
+                //  
+                //  // Just so we have some instructions to reply with
+                //  sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
+                //  
+                //  
+                //  
+                // } else {
+                //  // We need to tell the robot to (keep) moving towards the Pickup Zone.
+                //  int robotCurrentAngle = latestPose.angle; // degrees
+                //  int angleToTheGoal = (int)getAngle(currentGoal.location, robotPoint);
+                //  int distanceToGoal = distance(currentGoal.location.x - robotPoint.x,
+                //                                  currentGoal.location.y -robotPoint.y);
+                //  System.out.println("Distance to goal (" + currentGoal.location.x + ", " + currentGoal.location.y + ") is: " + distanceToGoal);
+                //  
+                //  int RANGE = 5;
+                //  byte rotation = ROTATE_NONE;
+                //  byte movement = MOVE_NONE;
+                //   
+                //  int angleDifference = angleToTheGoal - robotCurrentAngle;
+                //  System.out.println("Angle diff: " + angleDifference);
+                //  
+                //  if (Math.abs(angleDifference) &lt; RANGE) {
+                //      rotation = ROTATE_NONE;
+                //      movement = MOVE_SMALL;
+                //      System.out.println("Should move");
+                //  } else if (angleDifference &gt; 0) {
+                //      rotation = angleDifference &lt; 180? ROTATE_BACK_SMALL : ROTATE_SMALL;
+                //      movement = MOVE_NONE;
+                //  } else {
+                //      rotation = ROTATE_SMALL; // might need to do like above...
+                //      movement = MOVE_NONE;
+                //  }
+                //  
+                //  
+                //  // Now send this command to the robot
+                //  sendInstructionsToRobot(movement, rotation, GO);
+                //  
+                // }
+
+
+                break;
+
+
+            }
+
+
+            case RobotStatePickTop: {
+
+                // We need to tell the robot to go into BLOCK_SEEK mode
+
+                // We'll send the BLOCK_SEEK command, which he'll then do.
+                // After he's found the block (OR A TIMEOUT?) then he'll message again, reporting
+                if (commandData[STATUS] == STATUS_COMMAND_REQUEST) {
+                    // He's asking for what to do, so tell him to go seek
+                    System.out.println("PickTop: going to tell robot to SEEK_BLOCK");
+                    sendInstructionsToRobot(MOVE_SMALL, ROTATE_NONE, SEEK_BLOCK);
+                    break;
+                } else if (commandData[STATUS] == STATUS_BLOCK_FOUND) {
+                    // He's found a block
+                    System.out.println("PickTop: Robot found a block. Transitioning...");
+                    setRobotState(RobotState.RobotStateDropBottom);
+                    computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStateDropBottom);
+                } else {
+                    // he must not have found it in time... sad face?
+                    System.out.println("PickTop: Robot did not find a block... transitioning anyway.");
+                    setRobotState(RobotState.RobotStateDropBottom);
+                    computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStateDropBottom);
+                }
+
+
+                // He's either found or hasn't found a block, but he's already looked.
+                // Now we tell him to just wait a sec and then ask again for the next state
+                sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
+                break;
+
+            }
+
+
+            case RobotStateDropBottom: {
+                // Moving towards the bottom drop zone
+                goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStateDoActualDropBottom, true);
+                // When do we tell the robot to ACTUALLY drop it?
+                break;
+            }
+
+
+            case RobotStateDoActualDropBottom: {
+                if (commandData[STATUS] == STATUS_COMMAND_REQUEST) {
+                    // ASking us what to do.. say drop the block!
+                    System.out.println("DoActualDropBottom: telling robot to drop");
+                    sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, DROP_BLOCK);
+                } else {
+                    // He's done it
+                    System.out.println("DoActualDropBottom: Robot has dropped the block.");
+                    _numberOfDeliveredBlocks++;
+                    announceDropoffAtPointToStation(new Point(latestPose.x, latestPose.y), 3);
+
+                    setRobotState(RobotState.RobotStateSeekBottom);
+                    computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStateSeekBottom);
+                    sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
+                }
+
+                break;
+            }
+
+
+            case RobotStateSeekBottom: {
+
+                // Seek to the bottom area
+                goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStatePickBottom, false);
+                break;
+
+            }
+
+
+            case RobotStatePickBottom: {
+
+
+                // We need to tell the robot to go into BLOCK_SEEK mode
+
+                // We'll send the BLOCK_SEEK command, which he'll then do.
+                // After he's found the block (OR A TIMEOUT?) then he'll message again, reporting
+                if (commandData[STATUS] == STATUS_COMMAND_REQUEST) {
+                    // He's asking for what to do, so tell him to go seek
+                    System.out.println("PickBottom: going to tell robot to SEEK_BLOCK");
+                    sendInstructionsToRobot(MOVE_SMALL, ROTATE_NONE, SEEK_BLOCK);
+                    break;
+                } else if (commandData[STATUS] == STATUS_BLOCK_FOUND) {
+                    // He's found a block
+                    System.out.println("PickBottom: Robot found a block. Transitioning...");
+                    setRobotState(RobotState.RobotStateDropTop);
+                    computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStateDropTop);
+                } else {
+                    // he must not have found it in time... sad face?
+                    System.out.println("PickBottom: Robot did not find a block... transitioning anyway.");
+                    setRobotState(RobotState.RobotStateDropTop);
+                    computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStateDropTop);
+                }
+
+
+                // He's either found or hasn't found a block, but he's already looked.
+                // Now we tell him to just wait a sec and then ask again for the next state
+                sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, STAY_STILL);
+                break;
+            }
+
+
+            case RobotStateDropTop: {
+
+                // Move towards the dropoff zone, then transition to the FinishedCycle state, where the block is dropped and we decide what's next
+                goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStateDoActualDropTop, true);
+
+                break;
+            }
+
+
+            case RobotStateDoActualDropTop: {
+
+                if (commandData[STATUS] == STATUS_COMMAND_REQUEST) {
+                    // ASking us what to do.. say drop the block!
+                    System.out.println("DoActualDropTop: telling robot to drop");
+                    sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, DROP_BLOCK);
+                } else {
+                    // He's done it
+
+                    _numberOfDeliveredBlocks++;
+                    System.out.println("DoActualDropTop: Robot has dropped the block.(" + _numberOfDeliveredBlocks + "/" + TOTAL_BLOCKS);
+
+
+                    // Tell the top station
+                    announceDropoffAtPointToStation(new Point(latestPose.x, latestPose.y), 1);
+
+                    setRobotState(RobotState.RobotStateFinishedCycle);
+                    //computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStateFinishedCycle);
+                    sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
+                }
+
+
+                break;
+            }
+
+
+            case RobotStateFinishedCycle: {
+
+                if (_numberOfDeliveredBlocks == TOTAL_BLOCKS) {
+                    System.out.println("All the blocks have been delivered. Move out of the way and STOP");
+                    setRobotState(RobotState.RobotStatePark);
+                    computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStatePark);
+                    sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
+                } else {
+                    System.out.println("Finished a cycle. More blocks remaining.");
+                    setRobotState(RobotState.RobotStateSeekTop);
+                    computePathFromRobotPoseToEndGoal(latestPose, RobotState.RobotStateSeekTop);
+                    sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ASK_AGAIN);
+                }
+
+                break;
+            }
+
+
+            case RobotStatePark: {
+
+
+                goalNavigateAlongCurrentPathForRobotPoint(latestPose, RobotState.RobotStateEnd, true);
+
+                break;
+            }
+
+
+            case RobotStateEnd: {
+
+                System.out.println("The robot is all done... why is it asking again?");
+                announceCompletionToOtherStations();
+                sendInstructionsToRobot(MOVE_NONE, ROTATE_NONE, ALL_DONE);
+                break;
+
+            }
+        }       
+    }
+
+
+    public void receivedDataFromStation(int stationId, String data) {
+        //System.out.println("Got " + data + " from station: " + stationId);
+
+        //System.out.printf("Station ID: %d, Data: [ %s ]\n", stationId, data);
+        System.out.println("StationID: " + stationId + data);
+
+        StationMessage message = StationMessage.Parse(stationId, data);
+        int x = message.getX();
+        int y = message.getY();
+
+        switch (message.getMessageType()) {
+            case STATION_1_RED_BLOCK_DROPPED_OFF: {
+                _numberOfTopBlocksReady++;
+                System.out.println("Got a new top block");
+
+                // add it to the pickup list
+
+                // Maybe have to offset these points to make it easier for bot to find them?
+                topPickupGoals.add(new Goal(new Point(x, y)));
+
+                break;
+            }
+
+
+            case STATION_3_BLUE_BLOCK_DROPPED_OFF: {
+                _numberOfBottomBlocksReady++;
+                System.out.println("Got a new bottom block");
+
+                // add it to the pickup list
+
+                // Maybe have to offset these points to make it easier for bot to find them?
+                bottomPickupGoals.add(new Goal(new Point(x, y)));
+                break;
+            }
+
+
+            case ZONE_1_LOCKED: {
+                _topZoneUnlocked = false;
+                System.out.println("Locking the top zone");
+                break;
+            }
+
+
+            case ZONE_1_UNLOCKED: {
+                _topZoneUnlocked = true;
+                System.out.println("Unlocking the top zone");
+                break;
+            }
+
+
+            case ZONE_3_LOCKED: {
+                _bottomZoneUnlocked = false;
+                System.out.println("Locking the bottom zone");
+                break;
+            }
+
+
+            case ZONE_3_UNLOCKED: {
+                _bottomZoneUnlocked = true;
+                System.out.println("Unlocking the bottom zone");
+                break;
+            }
+
+
+            default: {
+                System.out.println("Got a message we don't care about: " + message.getMessageType().toString());
+            }
+
+        }
+
+    }
+
+
+    public int distance(int a, int b) {
+        int c2 = (int) ((Math.pow(a, 2)) + (Math.pow(b, 2)));
+        return (int)(Math.sqrt(c2));
+    }
+
+
+    public double getAngle(Point goalPoint, Point robotPoint) {
+        System.out.println("Goal: " + goalPoint.toString() + " robot: " + robotPoint.toString());
+        int gx = goalPoint.x;
+        int gy = goalPoint.y;
+        int rx = robotPoint.x;
+        int ry = robotPoint.y;
+
+
+        double dx = 0;
+        double dy = 0;
+
+        dx = gx - rx;
+        dy = gy - ry;
+
+
+        double inRads = Math.atan2(dy,dx);
+        double deg = Math.toDegrees(inRads);
+        if (deg &lt; 0) {
+            deg = 360 + deg;
+        }
+        return deg;
+    }
+
+
+    class Goal {
+        public Point location;
+        public boolean isReached;
+
+        public Goal(Point loc) {
+            location = loc;
+            isReached = false;
+        }
+
+        public boolean isPointCloseEnoughToGoal(Point p) {
+            final int RANGE = 30;
+            return (inAbsoluteRange(p.x, this.location.x, RANGE) &amp;&amp; inAbsoluteRange(p.y, this.location.y, RANGE));
+        }
+
+        private boolean inAbsoluteRange(int a, int b, int range) {
+            return (Math.abs((a - b)) &lt; range);
+        }
+
+        public String toString() {
+            return location.toString();
+        }
+    }
+
+
+    class Point {
+        public int x, y;
+
+        public Point(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public boolean equals(Point p) {
+            return p.x == this.x &amp;&amp; p.y == this.y;
+        }
+
+        public String toString() {
+            return x + ", " + y;
+        }
+    }
+
+}
+</code></pre>
+
+<h3>Navigate.spin</h3>
+
+<pre><code>CON
+  _clkmode = xtal1 + pll16x     ' This is required for proper timing
+  _xinfreq = 5_000_000          ' This is required for proper timing
+
+  CLK_FREQ = ((_clkmode-xtal1)&gt;&gt;6)*_xinfreq
+  MS_001 = CLK_FREQ / 1_000
+
+  SERVO_STOPPED_LEFT = 750
+  SERVO_STOPPED_RIGHT = 750
+
+  LEFT_GRIPPER_CLOSED = 208
+  LEFT_GRIPPER_MID = 175
+  LEFT_GRIPPER_OPEN = 158
+
+  RIGHT_GRIPPER_CLOSED = 101
+  RIGHT_GRIPPER_MID = 134
+  RIGHT_GRIPPER_OPEN = 155
+
+  HEAD_TILT_DOWN = 110
+  HEAD_TILT_MID = 126
+  HEAD_TILT_UP = 143
+
+  HEAD_TWIST_LEFT = 81
+  HEAD_TWIST_MID = 146
+  HEAD_TWIST_RIGHT = 215
+
+  SENSOR_FRONT_LEFT = 3
+  SENSOR_FRONT_CENTER = 2
+  SENSOR_FRONT_RIGHT = 1
+
+  SENSOR_SIDE_FRONT_RIGHT = 7
+  SENSOR_SIDE_FRONT_LEFT = 4
+  SENSOR_SIDE_BACK_RIGHT = 6
+  SENSOR_SIDE_BACK_LEFT = 5
+
+  BEEP_SHORT = 250
+  BEEP_TONE_LEFT = 1000
+  BEEP_TONE_CENTER =3000
+  BEEP_TONE_RIGHT = 5000
+
+  YES = 1
+  NO = 0
+  RED = 185
+  BLUE = 16
+  GREEN = 16
+  HALF_TURNING_AMOUNT = 150
+  TURNING_AMOUNT = 310
+  BACKWARDS_AMOUNT = 175
+  WANDERING_AMOUNT = 500
+
+  ' Arbitration
+  PRIORITY_WANDER = 1
+  PRIORITY_PERFORM_TASK = 2
+  PRIORITY_COLLISION_AVOID = 3
+
+  STATE_ORIENT = 0
+  STATE_FOLLOW = 1
+  STATE_ALIGN  = 2
+
+  WHEEL_SPEED_LEFT = 17
+  WHEEL_SPEED_RIGHT = 17
+
+  BLOCK_LEFT_SIDE = 55
+  BLOCK_RIGHT_SIDE = 30
+
+  ' byte indices
+  ROTATION_INDEX = 1
+  MOVE_INDEX = 2
+  CONTROL_INDEX = 3
+
+  ' Movement instructions
+  MOVE_NONE = 0
+  MOVE_SMALL = 1
+
+  ' Rotation instructions
+  ROTATE_NONE = 0
+  ROTATE_SMALL = 1
+  ROTATE_BACK_SMALL = 2
+
+
+  ' Command instructions
+  STAY_STILL = 0  ' We're still waiting for the team to finish... set a timer and then ask again
+  ASK_AGAIN = 1   ' Transitioning states, just ask again on the next iteration through
+  GO = 2          ' Some kind of movement command (move or rotate)
+  SEEK_BLOCK = 3  ' The robot needs to go into seek mode and then pick up a block... collision detection too!
+  DROP_BLOCK = 4  ' The robot just needs to drop the block
+  ALL_DONE = 100  ' The robot has completed the tasks and should shut down.
+
+
+  ' Status codes
+  STATUS_COMMAND_REQUEST = 0
+  STATUS_BLOCK_FOUND = 1
+  STATUS_BACKUP_DONE = 2
+
+  TURN_COUNT_SMALL = 10
+  TURN_SMALL = 5
+  MOVE_SMALL_COUNT = 50
+  STAY_STILL_COUNT = 100
+
+  GOOD_CONFIDENCE = 20
+  CAMERA_SENSITIVITY = 30
+
+
+VAR
+  long current_state, edge_follow_left, edge_follow_right
+  long detect_front, detect_right
+
+  byte dataIn[7]
+  byte out_packet[6]
+  long cur_x, cur_y, cur_a, estimation_counter, pulse_left, pulse_right, turning_count, forward_count, turning_left
+  byte turn_val, move_val
+  long collecting_data, sonar_reading, ir_reading
+  long stay_still_counter
+
+  long did_find_block, have_reversed
+
+  long pc_move_command
+  long pc_rotate_command
+  long pc_control_command
+
+OBJ
+  RBC: "RBC"
+  Beeper: "Beeper"
+  Servos: "ServoControl2"
+  IRSensors: "IR8SensorArray"
+  Sonar: "PingSensor"
+  Dirrs: "DirrsSensor"
+  BlockSensor: "BlockSensor"
+  Camera: "CMUCam"
+
+
+PUB main
+
+  'Beeper.Startup
+  RBC.Init
+
+  turning_count := 0
+  forward_count := 0
+  turning_left := NO
+  did_find_block := NO
+  have_reversed := NO
+
+
+  turn_val := 0
+  move_val := 0
+
+'  RBC.ReceiveData(@dataIn)
+ ' cur_x := dataIn[1]*256 + dataIn[2]
+ ' cur_y := dataIn[3]*256 + dataIn[4]
+ ' cur_a := dataIn[5]*256 + dataIn[6]
+
+  Servos.Start(SERVO_STOPPED_LEFT - 5, SERVO_STOPPED_RIGHT, true, true, true, true)
+  Servos.SetRightGripper(100)
+  Servos.SetLeftGripper(200)
+  Servos.SetHeadYaw(150)
+ ' Servos.SetHeadPitch(125)
+
+  Camera.Start
+  Camera.SetTrackColor(RED, GREEN, BLUE, CAMERA_SENSITIVITY)
+
+  Beeper.OK
+
+  current_state := STATE_FOLLOW
+  nslog(string("about to move"))
+  repeat 'main loop
+
+
+
+    'see if we're already in a turn, in which case we should turn!
+    if (turning_count &gt; 0)
+      turning_count := turning_count - 1
+      RBC.DebugLong(turning_count)
+      'nslog(string(" :in the turning count loop"))
+      pauseMS(50)
+      do_turn
+
+      next
+
+
+    'move forward as needed
+    if (forward_count &gt; 0)
+      forward_count := forward_count - 1
+      'nslog(string("in the moving loop"))
+      pauseMS(50)
+      do_move_forward
+      next
+
+
+    if (stay_still_counter &gt; 0)
+      stay_still_counter := stay_still_counter - 1
+      'nslog(string("staying still...."))
+      pauseMS(50)
+      next
+
+
+    'wait and get data from the RBC
+    nslog(string("waiting for planner data"))
+
+
+    ' Stop the servos and then ask for a new command
+    set_wheel_speeds(0, 0)
+    ask_pc_for_instructions(did_find_block)
+
+    ' Now process the response
+    process_pc_instructions
+
+
+    ' reset any control counters
+    turning_count := 0
+    forward_count := 0
+    stay_still_counter := 0
+    did_find_block := NO
+    have_reversed := NO
+
+
+    ' now deal with the instructions based on the control bit
+    case (pc_control_command)
+
+      STAY_STILL:
+        stay_still_counter := STAY_STILL_COUNT
+        next
+
+      ASK_AGAIN:
+        next
+
+      GO:
+        ' some kind of movement... need to check
+        case (pc_rotate_command)
+          ROTATE_NONE: 'do nothing important
+          ROTATE_SMALL:
+            turning_count := TURN_SMALL
+            turning_left := NO
+            next
+          ROTATE_BACK_SMALL:
+            turning_count := TURN_SMALL
+            turning_left := YES
+            next
+
+
+        ' not rotation, so let's check movement then
+        case (pc_move_command)
+          MOVE_NONE:
+            forward_count := 0
+          MOVE_SMALL:
+            forward_count := MOVE_SMALL_COUNT
+            next 'ignoring the "REVERSE_BIG" command when we're all done?
+
+
+      SEEK_BLOCK:
+        do_seek_block ' enters its own run-loop where it doesn't break out until it's found a block and clasped the grippers
+      DROP_BLOCK:
+        do_drop_block ' enters its own run-loop where it moves and drops off a block and breaks out of it when it's done.
+      ALL_DONE:
+        set_wheel_speeds(0, 0)
+        Beeper.Shutdown
+        return
+
+
+
+
+PUB ask_pc_for_instructions (found_a_block)
+
+  if (found_a_block == YES)
+    out_packet[0] := STATUS_BLOCK_FOUND / 256
+    out_packet[1] := STATUS_BLOCK_FOUND // 256
+  elseif (have_reversed == YES)
+    out_packet[0] := STATUS_BACKUP_DONE / 256
+    out_packet[1] := STATUS_BACKUP_DONE // 256
+  else
+    out_packet[0] := STATUS_COMMAND_REQUEST / 256
+    out_packet[1] := STATUS_COMMAND_REQUEST // 256
+  RBC.SendDataToPC(@out_packet, 6, RBC#OUTPUT_TO_NONE)
+
+
+PUB process_pc_instructions
+
+  RBC.ReceiveData(@dataIn)
+
+  ' Does this need to be offset???
+
+  pc_move_command := dataIn[MOVE_INDEX]
+  pc_rotate_command := dataIn[ROTATION_INDEX]
+  pc_control_command := dataIn[CONTROL_INDEX]
+
+
+
+PRI do_seek_block | found_block, cam_x, temp_holder, temp_con
+
+  Servos.SetHeadPitch(HEAD_TILT_DOWN)
+  open_grippers
+  found_block := NO
+  cam_x := 0
+  temp_holder := 99
+  temp_con := 98
+
+  nslog(string("GOING TO SEEK A BLOCK"))
+  repeat until (found_block == YES)
+
+    ' try looking for a block
+    temp_holder := BlockSensor.Detect
+
+    RBC.DebugLongCR(temp_holder)
+    if (BlockSensor.Detect)
+      close_grippers
+      found_block := YES
+      nslog(string("YESSSS"))
+      quit
+
+   ' nslog(string("gmmmmmm"))
+    ' see if we can find where a block is using the camera
+    Camera.TrackColor
+    temp_con := Camera.GetConfidence
+    nslog(string("confidence"))
+    RBC.DebugLongCR(temp_con)
+
+    if (temp_con &gt; GOOD_CONFIDENCE)
+      cam_x := Camera.GetCenterX
+      nslog(string("SEE A BLOCK SOMEWHERE"))
+      RBC.DebugLongCR(cam_x)
+
+
+      if (cam_x &gt; BLOCK_LEFT_SIDE)
+        nslog(string("turn left"))
+        do_left_turn
+      elseif (cam_x &lt; BLOCK_RIGHT_SIDE)
+        nslog(string("to the right"))
+        do_right_turn
+      else
+        do_slow_forward
+
+    else
+      ' don't see the block... keep moving forward. it might appear
+      do_slow_forward
+
+
+  set_wheel_speeds(0, 0)
+  nslog(string("out of the loop"))
+  close_grippers 
+  Servos.SetHeadPitch(HEAD_TILT_MID)
+  did_find_block := YES ' so this can be sent to the PC on the next iteration 
+
+
+PRI do_drop_block | back_count
+  nslog(string("dropping block and backing up"))
+  ' drop the block, back up a bit, and then close the grippers
+  open_grippers
+  pauseMS(2000)
+  back_count := 15
+  repeat until (back_count == 0)
+    back_count := back_count - 1
+    pauseMS(300)
+    set_wheel_speeds(-8, -8)
+
+  set_wheel_speeds(0, 0)
+  have_reversed := YES
+  close_grippers
+
+
+PRI open_grippers
+  Servos.SetLeftGripper(LEFT_GRIPPER_OPEN)
+  Servos.SetRightGripper(RIGHT_GRIPPER_OPEN)
+
+
+PRI close_grippers
+  Servos.SetLeftGripper(LEFT_GRIPPER_CLOSED)
+  Servos.SetRightGripper(RIGHT_GRIPPER_CLOSED)
+'moving functions for the block seeking
+
+
+PRI do_left_turn | i_turn_count
+
+
+  i_turn_count := TURN_COUNT_SMALL + 6
+  repeat until (i_turn_count == 0)
+    i_turn_count := i_turn_count - 1
+    turnLeft
+    nslog(string("L"))
+
+  ' reset the speeds so the robot isn't still turning :)
+ ' set_wheel_speeds(0, 0)
+
+
+
+PRI do_right_turn | i_turn_count
+
+  i_turn_count := TURN_COUNT_SMALL + 6
+  repeat until (i_turn_count == 0)
+    i_turn_count := i_turn_count - 1
+    turnRight
+    nslog(string("R"))
+
+  ' reset the speeds so the robot isn't still turning :)
+  'set_wheel_speeds(0, 0)
+
+PRI do_slow_forward | i_move_count
+
+  i_move_count := 10
+  repeat until (i_move_count == 0)
+    set_wheel_speeds(8, 8)
+    nslog(string("m"))
+    i_move_count := i_move_count - 1
+
+  ' stop him again
+ ' set_wheel_speeds(0, 0)
+
+
+PUB do_moving_as_needed
+  case (current_state)
+    STATE_FOLLOW:
+      'move forward
+      set_speeds(WHEEL_SPEED_LEFT, WHEEL_SPEED_RIGHT)
+    STATE_ALIGN:
+      'turn right
+      set_speeds(WHEEL_SPEED_LEFT + 5, -5)
+    STATE_ORIENT:
+      'turn left
+      set_speeds(-3, WHEEL_SPEED_RIGHT + 8)
+
+
+PUB do_move_forward
+  set_wheel_speeds(WHEEL_SPEED_LEFT, WHEEL_SPEED_RIGHT)
+
+
+PRI set_speeds(left, right)
+  Servos.SetSpeeds(left, right)
+
+
+PRI do_turn
+  if (turning_left)
+    nslog(string("lft"))
+    turnLeft
+  else
+    nslog(string("rght"))
+    turnRight
+
+
+PUB turnLeft
+  'Servos.SetSpeeds(0, 17)
+  set_wheel_speeds(-5, WHEEL_SPEED_RIGHT)
+
+
+PUB turnRight
+  'Servos.SetSpeeds(14, 0)
+  set_wheel_speeds(WHEEL_SPEED_LEFT, -5)
+
+
+PUB set_wheel_speeds(left_s, right_s)
+  Servos.SetSpeeds(left_s, right_s)
+
+
+
+  'now write them out
+
+
+PRI nslog(str)
+  RBC.DebugStrCr(str)
+
+PUB pauseMS(ms) | t
+ {{ i borrowed this function from
+<a href="http://www.parallax.com/Portals/0/Downloads/docs/cols/nv/prop/col/nvp7.pdf">http://www.parallax.com/Portals/0/Downloads/docs/cols/nv/prop/col/nvp7.pdf</a>
+}}
+ t := CNT
+ REPEAT ms
+   WAITCNT(t += MS_001)
+</code></pre>
+
+<h3>StationMessage.java</h3>
+
+<pre><code>public class StationMessage
+{
+
+    private int m_X;
+    private int m_Y;
+    private MessageType m_MessageType;
+
+    public static StationMessage Parse(int stationId, String messageData) {
+        int x = -1;
+        int y = -1;
+        MessageType messageType;
+
+        String[] tokens = messageData.split(":");
+        messageType = MessageType.values()[Integer.parseInt(tokens[0])];
+
+        if (messageType != MessageType.STATION_2_DONE) {
+            x = Integer.parseInt(tokens[1]);
+            y = Integer.parseInt(tokens[2]);    
+        }
+
+        return new StationMessage(x, y, messageType);
+    }
+
+
+    public static String FormatToMessage(MessageType messageType, int x, int y) {
+        return String.format("%d:%d:%d", messageType.ordinal(), x, y);
+    }
+
+
+    public static String FormatToMessage(MessageType messageType) {
+        return String.format("%d", messageType.ordinal());
+    }
+
+
+    public StationMessage(int x, int y, MessageType messageType) {
+        m_X = x;
+        m_Y = y;
+        m_MessageType = messageType;
+    }
+
+
+    public int getX() {
+        return m_X;
+    }
+
+
+    public int getY() {
+        return m_Y;
+    }
+
+
+    public MessageType getMessageType() {
+        return m_MessageType;
+    }
+
+
+    @Override
+    public String toString() {
+        return String.format("[MessageType=%s][X=%d, Y=%d]", m_MessageType, m_X, m_Y);
+    }
+}
+</code></pre>
+
+<h3>MessageType.java</h3>
+
+<pre><code>public enum MessageType {
+    STATION_3_BLUE_BLOCK_DROPPED_OFF,
+    STATION_1_RED_BLOCK_DROPPED_OFF,
+    STATION_2_BLUE_BLOCK_DROPPED_OFF,
+    STATION_2_RED_BLOCK_DROPPED_OFF,
+    STATION_2_DONE,
+    ZONE_1_LOCKED,
+    ZONE_1_UNLOCKED,
+    ZONE_2_1_LOCKED,
+    ZONE_2_1_UNLOCKED,
+    ZONE_2_2_LOCKED,
+    ZONE_2_2_UNLOCKED,
+    ZONE_3_LOCKED,
+    ZONE_3_UNLOCKED,
+    STATION_1_FIRST_ROW_CLEAR,
+    STATION_3_FIRST_ROW_CLEAR
+}
+</code></pre></article>
+  </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<div class="frame frame-loading large-loading-area" style="display:none;" data-tree-list-url="/jbrennan/COMP4807/tree-list/513a16ba2cd728469e067b32b0b53f6bda2fb3c3" data-blob-url-prefix="/jbrennan/COMP4807/blob/513a16ba2cd728469e067b32b0b53f6bda2fb3c3">
+  <img src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-64.gif?1329872005" height="64" width="64">
+</div>
+
+      </div>
+      <div class="context-overlay"></div>
+    </div>
+
+      <div id="footer-push"></div><!-- hack for sticky footer -->
+    </div><!-- end of wrapper - hack for sticky footer -->
+
+      <!-- footer -->
+      <div id="footer" >
+        
+  <div class="upper_footer">
+     <div class="container clearfix">
+
+       <!--[if IE]><h4 id="blacktocat_ie">GitHub Links</h4><![endif]-->
+       <![if !IE]><h4 id="blacktocat">GitHub Links</h4><![endif]>
+
+       <ul class="footer_nav">
+         <h4>GitHub</h4>
+         <li><a href="https://github.com/about">About</a></li>
+         <li><a href="https://github.com/blog">Blog</a></li>
+         <li><a href="https://github.com/features">Features</a></li>
+         <li><a href="https://github.com/contact">Contact &amp; Support</a></li>
+         <li><a href="https://github.com/training">Training</a></li>
+         <li><a href="http://enterprise.github.com/">GitHub Enterprise</a></li>
+         <li><a href="http://status.github.com/">Site Status</a></li>
+       </ul>
+
+       <ul class="footer_nav">
+         <h4>Tools</h4>
+         <li><a href="http://get.gaug.es/">Gauges: Analyze web traffic</a></li>
+         <li><a href="http://speakerdeck.com">Speaker Deck: Presentations</a></li>
+         <li><a href="https://gist.github.com">Gist: Code snippets</a></li>
+         <li><a href="http://mac.github.com/">GitHub for Mac</a></li>
+         <li><a href="http://mobile.github.com/">Issues for iPhone</a></li>
+         <li><a href="http://jobs.github.com/">Job Board</a></li>
+       </ul>
+
+       <ul class="footer_nav">
+         <h4>Extras</h4>
+         <li><a href="http://shop.github.com/">GitHub Shop</a></li>
+         <li><a href="http://octodex.github.com/">The Octodex</a></li>
+       </ul>
+
+       <ul class="footer_nav">
+         <h4>Documentation</h4>
+         <li><a href="http://help.github.com/">GitHub Help</a></li>
+         <li><a href="http://developer.github.com/">Developer API</a></li>
+         <li><a href="http://github.github.com/github-flavored-markdown/">GitHub Flavored Markdown</a></li>
+         <li><a href="http://pages.github.com/">GitHub Pages</a></li>
+       </ul>
+
+     </div><!-- /.site -->
+  </div><!-- /.upper_footer -->
+
+<div class="lower_footer">
+  <div class="container clearfix">
+    <!--[if IE]><div id="legal_ie"><![endif]-->
+    <![if !IE]><div id="legal"><![endif]>
+      <ul>
+          <li><a href="https://github.com/site/terms">Terms of Service</a></li>
+          <li><a href="https://github.com/site/privacy">Privacy</a></li>
+          <li><a href="https://github.com/security">Security</a></li>
+      </ul>
+
+      <p>&copy; 2012 <span title="0.25831s from fe10.rs.github.com">GitHub</span> Inc. All rights reserved.</p>
+    </div><!-- /#legal or /#legal_ie-->
+
+      <div class="sponsor">
+        <a href="http://www.rackspace.com" class="logo">
+          <img alt="Dedicated Server" height="36" src="https://a248.e.akamai.net/assets.github.com/images/modules/footer/rackspaces_logo.png?1329521039" width="38" />
+        </a>
+        Powered by the <a href="http://www.rackspace.com ">Dedicated
+        Servers</a> and<br/> <a href="http://www.rackspacecloud.com">Cloud
+        Computing</a> of Rackspace Hosting<span>&reg;</span>
+      </div>
+  </div><!-- /.site -->
+</div><!-- /.lower_footer -->
+
+      </div><!-- /#footer -->
+
+    
+
+<div id="keyboard_shortcuts_pane" class="instapaper_ignore readability-extra" style="display:none">
+  <h2>Keyboard Shortcuts <small><a href="#" class="js-see-all-keyboard-shortcuts">(see all)</a></small></h2>
+
+  <div class="columns threecols">
+    <div class="column first">
+      <h3>Site wide shortcuts</h3>
+      <dl class="keyboard-mappings">
+        <dt>s</dt>
+        <dd>Focus site search</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt>?</dt>
+        <dd>Bring up this help dialog</dd>
+      </dl>
+    </div><!-- /.column.first -->
+
+    <div class="column middle" style='display:none'>
+      <h3>Commit list</h3>
+      <dl class="keyboard-mappings">
+        <dt>j</dt>
+        <dd>Move selection down</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt>k</dt>
+        <dd>Move selection up</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt>c <em>or</em> o <em>or</em> enter</dt>
+        <dd>Open commit</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt>y</dt>
+        <dd>Expand URL to its canonical form</dd>
+      </dl>
+    </div><!-- /.column.first -->
+
+    <div class="column last" style='display:none'>
+      <h3>Pull request list</h3>
+      <dl class="keyboard-mappings">
+        <dt>j</dt>
+        <dd>Move selection down</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt>k</dt>
+        <dd>Move selection up</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt>o <em>or</em> enter</dt>
+        <dd>Open issue</dd>
+      </dl>
+      <dl class="keyboard-mappings">
+        <dt><span class="platform-mac">⌘</span><span class="platform-other">ctrl</span> <em>+</em> enter</dt>
+        <dd>Submit comment</dd>
+      </dl>
+    </div><!-- /.columns.last -->
+
+  </div><!-- /.columns.equacols -->
+
+  <div style='display:none'>
+    <div class="rule"></div>
+
+    <h3>Issues</h3>
+
+    <div class="columns threecols">
+      <div class="column first">
+        <dl class="keyboard-mappings">
+          <dt>j</dt>
+          <dd>Move selection down</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>k</dt>
+          <dd>Move selection up</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>x</dt>
+          <dd>Toggle selection</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>o <em>or</em> enter</dt>
+          <dd>Open issue</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt><span class="platform-mac">⌘</span><span class="platform-other">ctrl</span> <em>+</em> enter</dt>
+          <dd>Submit comment</dd>
+        </dl>
+      </div><!-- /.column.first -->
+      <div class="column middle">
+        <dl class="keyboard-mappings">
+          <dt>I</dt>
+          <dd>Mark selection as read</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>U</dt>
+          <dd>Mark selection as unread</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>y</dt>
+          <dd>Remove selection from view</dd>
+        </dl>
+      </div><!-- /.column.middle -->
+      <div class="column last">
+        <dl class="keyboard-mappings">
+          <dt>c</dt>
+          <dd>Create issue</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>l</dt>
+          <dd>Create label</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>i</dt>
+          <dd>Back to inbox</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>u</dt>
+          <dd>Back to issues</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>/</dt>
+          <dd>Focus issues search</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div style='display:none'>
+    <div class="rule"></div>
+
+    <h3>Issues Dashboard</h3>
+
+    <div class="columns threecols">
+      <div class="column first">
+        <dl class="keyboard-mappings">
+          <dt>j</dt>
+          <dd>Move selection down</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>k</dt>
+          <dd>Move selection up</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>o <em>or</em> enter</dt>
+          <dd>Open issue</dd>
+        </dl>
+      </div><!-- /.column.first -->
+    </div>
+  </div>
+
+  <div style='display:none'>
+    <div class="rule"></div>
+
+    <h3>Network Graph</h3>
+    <div class="columns equacols">
+      <div class="column first">
+        <dl class="keyboard-mappings">
+          <dt><span class="badmono">←</span> <em>or</em> h</dt>
+          <dd>Scroll left</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt><span class="badmono">→</span> <em>or</em> l</dt>
+          <dd>Scroll right</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt><span class="badmono">↑</span> <em>or</em> k</dt>
+          <dd>Scroll up</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt><span class="badmono">↓</span> <em>or</em> j</dt>
+          <dd>Scroll down</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>t</dt>
+          <dd>Toggle visibility of head labels</dd>
+        </dl>
+      </div><!-- /.column.first -->
+      <div class="column last">
+        <dl class="keyboard-mappings">
+          <dt>shift <span class="badmono">←</span> <em>or</em> shift h</dt>
+          <dd>Scroll all the way left</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>shift <span class="badmono">→</span> <em>or</em> shift l</dt>
+          <dd>Scroll all the way right</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>shift <span class="badmono">↑</span> <em>or</em> shift k</dt>
+          <dd>Scroll all the way up</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>shift <span class="badmono">↓</span> <em>or</em> shift j</dt>
+          <dd>Scroll all the way down</dd>
+        </dl>
+      </div><!-- /.column.last -->
+    </div>
+  </div>
+
+  <div >
+    <div class="rule"></div>
+    <div class="columns threecols">
+      <div class="column first" >
+        <h3>Source Code Browsing</h3>
+        <dl class="keyboard-mappings">
+          <dt>t</dt>
+          <dd>Activates the file finder</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>l</dt>
+          <dd>Jump to line</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>w</dt>
+          <dd>Switch branch/tag</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>y</dt>
+          <dd>Expand URL to its canonical form</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <div style='display:none'>
+    <div class="rule"></div>
+    <div class="columns threecols">
+      <div class="column first">
+        <h3>Browsing Commits</h3>
+        <dl class="keyboard-mappings">
+          <dt><span class="platform-mac">⌘</span><span class="platform-other">ctrl</span> <em>+</em> enter</dt>
+          <dd>Submit comment</dd>
+        </dl>
+        <dl class="keyboard-mappings">
+          <dt>escape</dt>
+          <dd>Close form</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <div id="markdown-help" class="instapaper_ignore readability-extra">
+  <h2>Markdown Cheat Sheet</h2>
+
+  <div class="cheatsheet-content">
+
+  <div class="mod">
+    <div class="col">
+      <h3>Format Text</h3>
+      <p>Headers</p>
+      <pre>
+# This is an &lt;h1&gt; tag
+## This is an &lt;h2&gt; tag
+###### This is an &lt;h6&gt; tag</pre>
+     <p>Text styles</p>
+     <pre>
+*This text will be italic*
+_This will also be italic_
+**This text will be bold**
+__This will also be bold__
+
+*You **can** combine them*
+</pre>
+    </div>
+    <div class="col">
+      <h3>Lists</h3>
+      <p>Unordered</p>
+      <pre>
+* Item 1
+* Item 2
+  * Item 2a
+  * Item 2b</pre>
+     <p>Ordered</p>
+     <pre>
+1. Item 1
+2. Item 2
+3. Item 3
+   * Item 3a
+   * Item 3b</pre>
+    </div>
+    <div class="col">
+      <h3>Miscellaneous</h3>
+      <p>Images</p>
+      <pre>
+![GitHub Logo](/images/logo.png)
+Format: ![Alt Text](url)
+</pre>
+     <p>Links</p>
+     <pre>
+http://github.com - automatic!
+[GitHub](http://github.com)</pre>
+<p>Blockquotes</p>
+     <pre>
+As Kanye West said:
+
+> We're living the future so
+> the present is our past.
+</pre>
+    </div>
+  </div>
+  <div class="rule"></div>
+
+  <h3>Code Examples in Markdown</h3>
+  <div class="col">
+      <p>Syntax highlighting with <a href="http://github.github.com/github-flavored-markdown/" title="GitHub Flavored Markdown" target="_blank">GFM</a></p>
+      <pre>
+```javascript
+function fancyAlert(arg) {
+  if(arg) {
+    $.facebox({div:'#foo'})
+  }
+}
+```</pre>
+    </div>
+    <div class="col">
+      <p>Or, indent your code 4 spaces</p>
+      <pre>
+Here is a Python code example
+without syntax highlighting:
+
+    def foo:
+      if not bar:
+        return true</pre>
+    </div>
+    <div class="col">
+      <p>Inline code for comments</p>
+      <pre>
+I think you should use an
+`&lt;addr&gt;` element here instead.</pre>
+    </div>
+  </div>
+
+  </div>
+</div>
+
+
+    <div class="ajax-error-message">
+      <p><span class="icon"></span> Something went wrong with that request. Please try again. <a href="javascript:;" class="ajax-error-dismiss">Dismiss</a></p>
+    </div>
+
+    <div id="logo-popup">
+      <h2>Looking for the GitHub logo?</h2>
+      <ul>
+        <li>
+          <h4>GitHub Logo</h4>
+          <a href="http://github-media-downloads.s3.amazonaws.com/GitHub_Logos.zip"><img alt="Github_logo" src="https://a248.e.akamai.net/assets.github.com/images/modules/about_page/github_logo.png?1315937507" /></a>
+          <a href="http://github-media-downloads.s3.amazonaws.com/GitHub_Logos.zip" class="minibutton btn-download download"><span><span class="icon"></span>Download</span></a>
+        </li>
+        <li>
+          <h4>The Octocat</h4>
+          <a href="http://github-media-downloads.s3.amazonaws.com/Octocats.zip"><img alt="Octocat" src="https://a248.e.akamai.net/assets.github.com/images/modules/about_page/octocat.png?1315937507" /></a>
+          <a href="http://github-media-downloads.s3.amazonaws.com/Octocats.zip" class="minibutton btn-download download"><span><span class="icon"></span>Download</span></a>
+        </li>
+      </ul>
+    </div>
+
+    
+    
+    
+    <span id='server_response_time' data-time='0.26197' data-host='fe10'></span>
+  </body>
+</html>
+
